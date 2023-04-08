@@ -10,6 +10,7 @@ use App\Http\Requests\UserRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\QueryException;
 use DB;
 
 class APIController extends Controller
@@ -143,6 +144,8 @@ class APIController extends Controller
                 return response()->json($response,200);
             }
         }   
+
+        
 
         public function getProdcuts()
         {
@@ -298,11 +301,494 @@ class APIController extends Controller
         return response()->json($sports_categories, 200);
     }
 
-    public function getNews(){
-        $news = DB::table('news_details')
-        ->join('news_categories as nc','nc.id','=','news_details.news_category_id')
-        ->select(['news_details.*','nc.name as news_cat'])
-        ->get();
-        return response()->json($news, 200);
-    }
+    
+
+
+
+    // API COPS / JAMAIYA
+
+
+    public function getBranchesCat()
+    {
+        try {
+            // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                $branchesCat = DB::table('branch_categories')
+                ->get();
+    
+            // Create a JSON response with success status, data, and response code
+            return response()->json([
+                'code' => 200,
+                'status' => true,
+                'data' => $branchesCat
+            ], 200);
+        } catch (QueryException $e) {
+            // If a database query exception occurs, create a JSON response with error status, error message, and response code
+            return response()->json([
+                'code' => 500,
+                'status' => false,
+                'message' => 'Failed to retrieve branches cat  from the database: ' . $e->getMessage()
+            ], 500);
+        } catch (\Exception $e) {
+            // If any other exception occurs, create a JSON response with error status, error message, and response code
+            return response()->json([
+                'code' => 500,
+                'status' => false,
+                'message' => 'An error occurred: ' . $e->getMessage()
+            ], 500);
+        }
+    } 
+    
+   
+
+
+        public function getBranches()
+        {
+           /* try
+            {
+                                
+                $proCat = DB::table('branches')           
+                ->orderBy('created_at', 'desc')                
+                ->get();
+
+                $response = [
+                    'code'=>200,
+                    'status'=>true,
+                    'data'=>$proCat,
+    
+                    ];
+                return response()->json($response,200);
+            } catch (\Exception $e) {
+                $response = [
+                    'code'=>500,
+                    'message'=>$e->getMessage(),
+                    'status'=>false
+                ];
+                return response()->json($response,200);
+            } */
+
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                    $branches = DB::table('branches')
+                    ->join('branch_categories', 'branches.branch_categories_id', '=', 'branch_categories.id')
+                    ->select('branches.*', 'branch_categories.name as category_name')
+                    ->orderBy('branches.created_at', 'desc') // Add orderBy clause to order by created_at column in descending order
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $branches
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve branches from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }   
+
+
+        //Get Branches on given branch ID 
+        public function getBranchesById(Request $request)
+        {
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date, filtered by ID
+               
+                
+                    // Retrieve branches with category name from the 'branches' and 'branch_categories' tables
+                    $branches = DB::table('branches')
+                        ->join('branch_categories', 'branches.branch_categories_id', '=', 'branch_categories.id')
+                        ->select('branches.*', 'branch_categories.name as category_name')
+                        ->orderBy('branches.created_at', 'desc') // Add orderBy clause to order by created_at column in descending order
+                        ->where('branches.id', $request['id']) // Add where clause to filter by 'id' parameter
+                        ->get();
+
+
+                    if ($branches->isEmpty()) {
+                        // If no records found, create a JSON response with appropriate error status, message, and response code
+                        return response()->json([
+                            'code' => 404,
+                            'status' => false,
+                            'message' => 'No branches found with the given ID'
+                        ], 404);
+                    }
+
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $branches
+                ], 200);
+            } catch (QueryException $e) {
+                // If a SQL exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve branches: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }
+
+        //Get News 
+        public function getNews()
+        {
+            try {
+                // Retrieve news from the 'news_details' table in descending order of creation date
+                $news = DB::table('news_details')
+                    ->orderBy('created_at', 'desc')                  
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $news
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve news from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }    
+
+
+        //Get News By ID
+        public function getNewsById(Request $request)
+        {
+            try {
+                $id = $request['id']; // Retrieve 'id' parameter from the request
+                
+                // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
+                $news = DB::table('news_details')
+                    ->where('id', $id)
+                    ->orderBy('created_at', 'desc')
+                    ->get();
+
+                if ($news->isEmpty()) {
+                    // If no data is found, create a JSON response with appropriate message, status, and response code
+                    return response()->json([
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'No news found'
+                    ], 404);
+                }
+
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $news
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve news from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }
+
+        //Get Offers
+        public function getOffersFestivals()
+        {
+            try {
+                // Retrieve offers from the 'news_details' table in descending order of creation date
+                $offers = DB::table('offers')
+                    ->orderBy('created_at', 'desc')                  
+                    ->get();
+
+                    if ($offers->isEmpty()) {
+                        // No records found
+                        return response()->json(['error' => 'No records found'], 404);
+                    }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $offers
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve ofsfers  from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }   
+        
+        
+        public function getCoupenOffersCat()
+        {
+            try {
+                // Retrieve offers from the 'news_details' table in descending order of creation date
+                $offer_categories = DB::table('offer_categories')
+                    ->orderBy('created_at', 'desc')                  
+                    ->get();
+
+                    if ($offer_categories->isEmpty()) {
+                        // No records found
+                        return response()->json(['error' => 'No records found'], 404);
+                    }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $offer_categories
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve offer_categories  from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }     
+        
+        
+        public function getCoupenOffers()
+        {        
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                $couponOffers = DB::table('coupon_offers')
+                ->join('offer_categories', 'coupon_offers.offer_categories_id', '=', 'offer_categories.id')
+                ->select('coupon_offers.*', 'offer_categories.name as offer_category_name')               
+                ->get();
+
+                if ($couponOffers->isEmpty()) {
+                    // No records found
+                    return response()->json(['error' => 'No records found'], 404);
+                }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $couponOffers
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to couponOffers branches from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }   
+
+
+        public function getCoupenOffersById(Request $request)
+        {        
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                $couponOffer = DB::table('coupon_offers')
+                ->join('offer_categories', 'coupon_offers.offer_categories_id', '=', 'offer_categories.id')
+                ->select('coupon_offers.*', 'offer_categories.name as offer_category_name')
+                ->where('coupon_offers.id', $request['id'])
+                ->get();
+
+
+                if ($couponOffer->isEmpty()) {
+                    // No records found
+                    return response()->json(['error' => 'No records found'], 404);
+                }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $couponOffer
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to couponOffers branches from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }   
+
+
+
+        public function getGalleries()
+        {        
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                $couponOffers = DB::table('galleries')
+                ->join('gallery_photos', 'galleries.id', '=', 'gallery_photos.galleries_id')
+                ->select('galleries.*', 'gallery_photos.photo as gallery_photos')
+                ->where('galleries.status', 'active')               
+                ->get();
+
+                if ($couponOffers->isEmpty()) {
+                    // No records found
+                    return response()->json(['error' => 'No records found'], 404);
+                }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $couponOffers
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to couponOffers branches from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }   
+
+
+        public function getSocialMedia()
+        {
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                    $socialmedia = DB::table('socialmedia')
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $socialmedia
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve socialmedia   from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        } 
+
+
+        /*
+        public function InsertComplaints(Request $request)
+        {
+            try {
+                // Validate the incoming request data
+
+
+                $complaint = new Complaint();
+                $complaint->name = $request['name'];
+                $complaint->number = $request['contact'];
+                $complaint->email = $request['email'];
+                $complaint->reason = $request['reason'];
+                $complaint->notes = $request['details'];
+                $complaint->save();
+                
+
+               
+
+                // Return a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 201,
+                    'status' => true,
+                    'message' => 'Complaint created successfully',
+                    'data' => $complaint
+                ], 201);
+            } catch (\Exception $e) {
+                // If any exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to create complaint: ' . $e->getMessage()
+                ], 500);
+            }
+        }
+
+        */
+    
+
 }
