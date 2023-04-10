@@ -76,68 +76,12 @@ Route::group(['middleware' => 'auth'], function () {
 	
 
 	Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-	Route::resource('/brands','App\Http\Controllers\BrandController');
-	Route::resource('/products','App\Http\Controllers\ProductController');
-	Route::resource('/categories','App\Http\Controllers\CategoryController');
-	Route::get('/vendors','App\Http\Controllers\UserController@vendors');
-	Route::get('/vendors/create','App\Http\Controllers\UserController@createVendor');
-	Route::post('/vendors/store','App\Http\Controllers\UserController@storeVendor');
-	Route::get('/vendors/edit','App\Http\Controllers\UserController@editVendor');
-	Route::post('/vendors/update','App\Http\Controllers\UserController@updateVendor');
-	Route::post('/vendors/delete','App\Http\Controllers\UserController@deleteVendor');
-
-		
-	Route::delete('/brands/{id}', 'App\Http\Controllers\BrandController@destroy')->name('brand.delete');
-	Route::delete('/categories/{id}', 'App\Http\Controllers\CategoryController@destroy')->name('category.delete');
-	Route::get('/poll/create','App\Http\Controllers\PollController@create');
-	Route::get('/poll','App\Http\Controllers\PollController@index');
-	Route::post('/poll/store','App\Http\Controllers\PollController@store');
+	
 
 	Route::resource('/news_category','App\Http\Controllers\NewsCategoryController');
 	Route::post('/news_category/update','App\Http\Controllers\NewsCategoryController@update');
 	Route::delete('/news_category/delete/{id}', 'App\Http\Controllers\NewsCategoryController@destroy')->name('news.category.delete');
 
-	Route::resource('/sports_category','App\Http\Controllers\SportsCategoryController');
-	Route::post('/sports_category/update','App\Http\Controllers\SportsCategoryController@update');
-	Route::delete('/sports_category/delete/{id}', 'App\Http\Controllers\SportsCategoryController@destroy')->name('sports.category.delete');
-
-	Route::resource('/seasons','App\Http\Controllers\SeasonController');
-	Route::post('/seasons/update','App\Http\Controllers\SeasonController@update');
-	Route::delete('/seasons/delete/{id}', 'App\Http\Controllers\SeasonController@destroy')->name('seasons.delete');
-
-	Route::resource('/teams','App\Http\Controllers\TeamController');
-	Route::post('/teams/update','App\Http\Controllers\TeamController@update');
-	Route::get('/teams/delete/{id}', 'App\Http\Controllers\TeamController@destroy')->name('teams.delete');
-	
-    Route::resource('/tournaments','App\Http\Controllers\TournamentController');
-    Route::post('/tournaments/update','App\Http\Controllers\TournamentController@update');
-	Route::get('/tournaments/delete/{id}', 'App\Http\Controllers\TournamentController@destroy')->name('tournaments.delete');
-
-	Route::resource('/players','App\Http\Controllers\PlayerController');
-	Route::post('/players/update','App\Http\Controllers\PlayerController@update');
-	Route::get('/players/delete/{id}', 'App\Http\Controllers\PlayerController@destroy')->name('players.delete');
-    Route::get('players/view/{id}','App\Http\Controllers\PlayerController@view');
-    
-	
-
-	Route::resource('/schedules','App\Http\Controllers\ScheduleController');
-	Route::post('/schedules/update','App\Http\Controllers\ScheduleController@update');
-	Route::get('/schedules/destroy/{id}', 'App\Http\Controllers\ScheduleController@destroy')->name('schedules.delete');
-	Route::get('/schedules/view/{id}', 'App\Http\Controllers\ScheduleController@view')->name('schedules.view');
-    Route::get('/get/team/list{id}', 'App\Http\Controllers\ScheduleController@teamList')->name('team.list');
-
-	Route::resource('/matches','App\Http\Controllers\MatchController');
-	Route::post('/matches/update','App\Http\Controllers\MatchController@update');
-	Route::get('/matches/destroy/{id}', 'App\Http\Controllers\MatchController@destroy')->name('matches.delete');
-	Route::get('/matches/players/{m_id}', [ 'as' => 'matches.players',
-    'uses' => 'App\Http\Controllers\MatchController@playersAdd']);
-    Route::get('/get/players/{id}', [ 'as' => 'get.players',
-    'uses' => 'App\Http\Controllers\MatchController@getPlayers']);
-
-    Route::get('/matches/save/players','App\Http\Controllers\MatchController@savePlayers');
-    Route::get('/matches/players/delete/{id}','App\Http\Controllers\MatchController@matchPlayersDel');
-    Route::get('/matches/players/view/{id}','App\Http\Controllers\MatchController@ViewMatch');
-	Route::get('/get/schedule/playerlist/{id}','App\Http\Controllers\MatchController@getPlayersList');
 	Route::resource('/roles','App\Http\Controllers\RoleController');
 	Route::post('/roles/update','App\Http\Controllers\RoleController@update');
 	Route::get('/roles/destroy/{id}', 'App\Http\Controllers\RoleController@destroy')->name('roles.delete');
@@ -150,6 +94,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/userlist/edit/{id}', 'App\Http\Controllers\UserController@editUser')->name('user.list.edit');
 	Route::post('/users_list/update','App\Http\Controllers\UserController@userUpdate');
     Route::get('/users_list/destroy/{id}', 'App\Http\Controllers\UserController@destroy')->name('users.list.delete');
+
+    Route::resource('/coupon_user','App\Http\Controllers\CouponUserController');
+	Route::post('/coupon_user/update','App\Http\Controllers\CouponUserController@update');
+    Route::get('/coupon_user/destroy/{id}', 'App\Http\Controllers\CouponUserController@destroy')->name('coupon.user.delete');
 
     
 });

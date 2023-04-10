@@ -41,26 +41,18 @@ class UserController extends Controller
     public function userStore(Request $request)
     {
         //
-            if($request->has('ge_reports')){
-                $reports = 'Y';
-            }else{
-                $reports = 'N';
-            }
+            
             $user = new User();
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->phone = $request['phone'];
             $user->role = $request['role'];
             $user->password = Hash::make($request['pwd']);
-            $user->shareholder_no  = $request['sh_holder'];
-            $user->civil_id  = $request['civil'];
-            $user->action  = $request['action'];
-            $user->generate_reports  = $reports;
             $user->save();
             
            
             return redirect('/user/list');
-       
+         
     }
     /**
      * Show the form for editing the specified resource.
@@ -90,11 +82,7 @@ class UserController extends Controller
 
     public function userUpdate(Request $request)
     {
-            if($request->has('ge_reports')){
-                $reports = 'Y';
-            }else{
-                $reports = 'N';
-            }
+            
             $user = User::find($request->get('user_id'));
             $user->name = $request['name'];
             $user->email = $request['email'];
@@ -103,10 +91,6 @@ class UserController extends Controller
             if($user->password != null){
               $user->password = Hash::make($request['pwd']);  
             }
-            $user->shareholder_no  = $request['sh_holder'];
-            $user->civil_id  = $request['civil'];
-            $user->action  = $request['action'];
-            $user->generate_reports  = $reports;
             $user->save();
 
         return redirect('/user/list');

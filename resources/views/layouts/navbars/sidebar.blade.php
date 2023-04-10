@@ -48,6 +48,12 @@
             <p>{{ __('jamia.user') }}</p>
         </a>
       </li>
+      <li class="nav-item{{ $activePage == 'coupon_user' ? ' active' : '' }}" >
+        <a class="nav-link" href="/coupon_user">
+          <i class="material-icons">content_paste</i>
+            <p>{{ __('jamia.emp') }}</p>
+        </a>
+      </li>
       @if(Auth::user()->userpermission(3))
       <li class="nav-item{{ $activePage == 'role' ? ' active' : '' }}" >
         <a class="nav-link" href="/roles">
