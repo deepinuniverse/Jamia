@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
 use DB;
+use App\Models\Complaint;
+use App\Models\Director;
+use App\Models\DiscardReport;
 
 class APIController extends Controller
 {
@@ -753,13 +756,41 @@ class APIController extends Controller
         } 
 
 
-        /*
-        public function InsertComplaints(Request $request)
+        public function getDirectors()
         {
             try {
-                // Validate the incoming request data
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                    $Director = DB::table('directors')
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $Director
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve Director   from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        } 
 
 
+
+        public function CreateComplaint(Request $request){
+            try {
                 $complaint = new Complaint();
                 $complaint->name = $request['name'];
                 $complaint->number = $request['contact'];
@@ -767,28 +798,52 @@ class APIController extends Controller
                 $complaint->reason = $request['reason'];
                 $complaint->notes = $request['details'];
                 $complaint->save();
-                
-
-               
-
-                // Return a JSON response with success status, data, and response code
-                return response()->json([
-                    'code' => 201,
+                $response = [
                     'status' => true,
-                    'message' => 'Complaint created successfully',
-                    'data' => $complaint
-                ], 201);
+                ];
+                return response()->json($response, 200);
             } catch (\Exception $e) {
-                // If any exception occurs, create a JSON response with error status, error message, and response code
-                return response()->json([
-                    'code' => 500,
-                    'status' => false,
-                    'message' => 'Failed to create complaint: ' . $e->getMessage()
-                ], 500);
+                $error = [
+                    'status'=> false,
+                    'error' => $e->getMessage(),
+                ];
+                return response()->json($error, 200);
             }
         }
 
-        */
+        public function CreateDiscardReport(Request $request){
+            try 
+            {
+                $discard = new DiscardReport();
+                $discard->item_name = $request['item'];
+                $discard->customer_contact = $request['contact'];
+                $discard->jamia_name = $request['name'];
+                $discard->customer_note = $request['cust_not'];
+                $img_url = '';
+                $img = $request->file('img');
+                if($img != null){
+                $image_name  = uniqid().'.'.$img->getClientOriginalExtension();
+                $destination = 'storage/DiscardReport';
+                $img->move($destination, $image_name );
+                $img_url = $request->getSchemeAndHttpHost().'/storage/DiscardReport/'.$image_name;
+                }
+                $discard->item_photo = $img_url;
+                $discard->report_dt = $request['date'];
+                $discard->admin_note = $request['ad_not'];
+                $discard->status = $request['status'];
+                $discard->save();              
+                $response = [
+                    'status' => true,
+                ];
+                return response()->json($response, 200);
+            } catch (\Exception $e) {
+                $error = [
+                    'status'=> false,
+                    'error' => $e->getMessage(),
+                ];
+                return response()->json($error, 200);
+            }
+        }
     
 
 }

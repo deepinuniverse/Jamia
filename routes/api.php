@@ -75,8 +75,13 @@ Route::get('/galleries/', 'App\Http\Controllers\APIController@getGalleries');
 //Get Social Media
 Route::get('/socialMedia/', 'App\Http\Controllers\APIController@getSocialMedia');
 
+//Get Directors 
+Route::get('/directors/', 'App\Http\Controllers\APIController@getDirectors');
 
-//Route::post('/complaints/', 'App\Http\Controllers\APIController@InsertComplaints');
+
+Route::post('/Complaint/Create/', 'App\Http\Controllers\APIController@CreateComplaint');
+
+Route::post('/DiscardReport/Create/', 'App\Http\Controllers\APIController@CreateDiscardReport');
 
 
 
