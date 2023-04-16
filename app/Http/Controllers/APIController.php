@@ -403,6 +403,54 @@ class APIController extends Controller
         }   
 
 
+         //Get Branches on given branch ID 
+         public function getBranchesByBranchCatId(Request $request)
+         {
+             try {
+                 // Retrieve branches from the 'branches' table in descending order of creation date, filtered by ID
+                
+                 
+                     // Retrieve branches with category name from the 'branches' and 'branch_categories' tables
+                     $branches = DB::table('branches')
+                         ->join('branch_categories', 'branches.branch_categories_id', '=', 'branch_categories.id')
+                         ->select('branches.*', 'branch_categories.name as category_name')
+                         ->orderBy('branches.created_at', 'desc') // Add orderBy clause to order by created_at column in descending order
+                         ->where('branch_categories.id', $request['catid']) // Add where clause to filter by 'id' parameter
+                         ->get();
+ 
+ 
+                     if ($branches->isEmpty()) {
+                         // If no records found, create a JSON response with appropriate error status, message, and response code
+                         return response()->json([
+                             'code' => 404,
+                             'status' => false,
+                             'message' => 'No branches found with the given ID'
+                         ], 404);
+                     }
+ 
+                 // Create a JSON response with success status, data, and response code
+                 return response()->json([
+                     'code' => 200,
+                     'status' => true,
+                     'data' => $branches
+                 ], 200);
+             } catch (QueryException $e) {
+                 // If a SQL exception occurs, create a JSON response with error status, error message, and response code
+                 return response()->json([
+                     'code' => 500,
+                     'status' => false,
+                     'message' => 'Failed to retrieve branches: ' . $e->getMessage()
+                 ], 500);
+             } catch (\Exception $e) {
+                 // If any other exception occurs, create a JSON response with error status, error message, and response code
+                 return response()->json([
+                     'code' => 500,
+                     'status' => false,
+                     'message' => 'An error occurred: ' . $e->getMessage()
+                 ], 500);
+             }
+         }
+
         //Get Branches on given branch ID 
         public function getBranchesById(Request $request)
         {
@@ -641,6 +689,48 @@ class APIController extends Controller
             }
         }   
 
+
+        public function getCoupenOffersByCatID(Request $request)
+        { 
+
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                $couponOffer = DB::table('coupon_offers')
+                ->join('offer_categories', 'coupon_offers.offer_categories_id', '=', 'offer_categories.id')
+                ->select('coupon_offers.*', 'offer_categories.name as offer_category_name')
+                ->where('offer_categories.id', $request['id'])
+                ->get();
+
+
+                if ($couponOffer->isEmpty()) {
+                    // No records found
+                    return response()->json(['error' => 'No records found'], 404);
+                }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $couponOffer
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to couponOffers branches from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+
+        }
 
         public function getCoupenOffersById(Request $request)
         {        

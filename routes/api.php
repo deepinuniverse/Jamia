@@ -55,6 +55,9 @@ Route::get('/branchesCat/', 'App\Http\Controllers\APIController@getBranchesCat')
 Route::get('/branches/', 'App\Http\Controllers\APIController@getBranches');
 Route::get('/branches/{id}', 'App\Http\Controllers\APIController@getBranchesbyId');
 
+//Get Branches list By Branch Category
+Route::get('/branchesByCat/{catid}', 'App\Http\Controllers\APIController@getBranchesByBranchCatId');
+
 // GET NEWS
 Route::get('/news/', 'App\Http\Controllers\APIController@getNews');
 Route::get('/news/{id}', 'App\Http\Controllers\APIController@getNewsbyId');
@@ -62,12 +65,16 @@ Route::get('/news/{id}', 'App\Http\Controllers\APIController@getNewsbyId');
 // GET offers
 Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
 
+
 // GET Coupen offers Category
 Route::get('/coupenOffersCat/', 'App\Http\Controllers\APIController@getCoupenOffersCat');
 
 // GET Coupen offers
 Route::get('/coupenOffers/', 'App\Http\Controllers\APIController@getCoupenOffers');
 Route::get('/coupenOffers/{id}', 'App\Http\Controllers\APIController@getCoupenOffersById');
+
+//Get Couper offer list By Category
+Route::get('/coupenOffesByCat/{id}', 'App\Http\Controllers\APIController@getCoupenOffersByCatID');
 
 //Get Gallaries
 Route::get('/galleries/', 'App\Http\Controllers\APIController@getGalleries');
@@ -78,10 +85,17 @@ Route::get('/socialMedia/', 'App\Http\Controllers\APIController@getSocialMedia')
 //Get Directors 
 Route::get('/directors/', 'App\Http\Controllers\APIController@getDirectors');
 
-
+//Create Complaints
 Route::post('/Complaint/Create/', 'App\Http\Controllers\APIController@CreateComplaint');
 
+//Discard Reports
 Route::post('/DiscardReport/Create/', 'App\Http\Controllers\APIController@CreateDiscardReport');
+
+
+
+
+
+
 
 
 
