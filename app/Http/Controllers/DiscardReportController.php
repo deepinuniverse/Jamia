@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\DiscardReport;
+use Auth;
 
 class DiscardReportController extends Controller
 {
@@ -16,7 +17,14 @@ class DiscardReportController extends Controller
     {
         //
         try {
-            $reports = DiscardReport::orderBy('report_dt','desc')->get();
+           
+
+           if(Auth::user()->role == '4'){
+              $reports = DiscardReport::whereIn('status', ['RECEIVED','UNDERPROCESS'])->orderBy('report_dt','desc')->get();  
+            }else{
+              $reports = DiscardReport::where('status','=','DONE')->orderBy('report_dt','desc')->get();  
+            }
+            
             return view('discard_report.index',['reports'=>$reports]);
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -108,6 +116,9 @@ class DiscardReportController extends Controller
             $discard->report_dt = $request['date'];
             $discard->admin_note = $request['ad_not'];
             $discard->status = $request['status'];
+            if($request['status'] == 'SEND'){
+            $discard->send_dt = date('Y-m-d');    
+            }
             $discard->save();
             return redirect('/discard_report');
      }
@@ -125,4 +136,63 @@ class DiscardReportController extends Controller
 
 
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function sendRpt($id)
+    {
+         $discard = DiscardReport::find($id);
+         $discard->status = 'SEND';
+         $discard->send_dt = date('Y-m-d');
+         $discard->save();
+         return Redirect('/discard_report')->with('success','Discard Report Send successfully');
+
+
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function pendingRptView(Request $request)
+    {
+         $discard = DiscardReport::find($request->get('id'));
+         
+         return view("discard_report.pendingView",compact('discard'));
+
+
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function adminRptRpy(Request $request)
+    {
+         $discard = DiscardReport::find($request->get('id'));
+         $discard->status = $request->get('status');
+         $discard->admin_note = $request->get('note');
+         $discard->save();
+         return 0;
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function reportView($id)
+    {
+         $discard = DiscardReport::find($id);
+        return view("discard_report.reportView",compact('discard'));
+
+
+    }
+
 }

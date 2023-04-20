@@ -43,6 +43,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('/discard_report','App\Http\Controllers\DiscardReportController');
 	Route::post('/discard_report/update','App\Http\Controllers\DiscardReportController@update');
 	Route::get('/discard_report/destroy/{id}', 'App\Http\Controllers\DiscardReportController@destroy')->name('discard.report.delete');
+	Route::get('/discard_report/send/{id}', 'App\Http\Controllers\DiscardReportController@sendRpt')->name('discard.report.send');
+	Route::get('/discard_report/pending/view', 'App\Http\Controllers\DiscardReportController@pendingRptView')->name('discard.report.pending.view');
+	Route::get('/discard_report/admin/replay', 'App\Http\Controllers\DiscardReportController@adminRptRpy')->name('discard.report.admin.replay');
+	Route::get('/discard_report/view/{id}', 'App\Http\Controllers\DiscardReportController@reportView')->name('discard.report.view');
 
 	Route::resource('/offer_category','App\Http\Controllers\OfferCategoryController');
 	Route::post('/offer_category/update','App\Http\Controllers\OfferCategoryController@update');
@@ -56,6 +60,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('/complaints','App\Http\Controllers\ComplaintController');
 	Route::post('/complaints/update','App\Http\Controllers\ComplaintController@update');
 	Route::get('/complaints/destroy/{id}', 'App\Http\Controllers\ComplaintController@destroy')->name('complaints.delete');
+	Route::get('/complaints/complaintView/{id}', 'App\Http\Controllers\ComplaintController@complaintView')->name('complaints.complaint.View');
+	Route::get('/complaint/pending/view', 'App\Http\Controllers\ComplaintController@pendingView')->name('complaint.pending.view');
+	Route::get('/complaint/doneBy/admin', 'App\Http\Controllers\ComplaintController@complaintDone')->name('complaint.doneBy.admin');
 
 	Route::resource('/galleries','App\Http\Controllers\GalleryController');
     Route::post('/galleries/update','App\Http\Controllers\GalleryController@update');
@@ -68,6 +75,10 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::resource('/branches','App\Http\Controllers\BranchController');
 	Route::post('/branches/update','App\Http\Controllers\BranchController@update');
     Route::get('/branches/destroy/{id}', 'App\Http\Controllers\BranchController@destroy')->name('branches.delete');
+
+    Route::resource('/coupon_user','App\Http\Controllers\CouponUserController');
+	Route::post('/coupon_user/update','App\Http\Controllers\CouponUserController@update');
+    Route::get('/coupon_user/destroy/{id}', 'App\Http\Controllers\CouponUserController@destroy')->name('coupon.user.delete');
 	//
 	Route::resource('user', 'App\Http\Controllers\UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'App\Http\Controllers\ProfileController@edit']);
@@ -76,11 +87,11 @@ Route::group(['middleware' => 'auth'], function () {
 	
 
 	Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-	
 
 	Route::resource('/news_category','App\Http\Controllers\NewsCategoryController');
 	Route::post('/news_category/update','App\Http\Controllers\NewsCategoryController@update');
 	Route::delete('/news_category/delete/{id}', 'App\Http\Controllers\NewsCategoryController@destroy')->name('news.category.delete');
+
 
 	Route::resource('/roles','App\Http\Controllers\RoleController');
 	Route::post('/roles/update','App\Http\Controllers\RoleController@update');
@@ -94,11 +105,22 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('/userlist/edit/{id}', 'App\Http\Controllers\UserController@editUser')->name('user.list.edit');
 	Route::post('/users_list/update','App\Http\Controllers\UserController@userUpdate');
     Route::get('/users_list/destroy/{id}', 'App\Http\Controllers\UserController@destroy')->name('users.list.delete');
+    
+    Route::resource('/notifications','App\Http\Controllers\NotificationController');
+    Route::post('/notifications/update','App\Http\Controllers\NotificationController@update');
+    Route::get('/notifications/destroy/{id}', 'App\Http\Controllers\NotificationController@destroy')->name('notifications.delete');
 
-    Route::resource('/coupon_user','App\Http\Controllers\CouponUserController');
-	Route::post('/coupon_user/update','App\Http\Controllers\CouponUserController@update');
-    Route::get('/coupon_user/destroy/{id}', 'App\Http\Controllers\CouponUserController@destroy')->name('coupon.user.delete');
+    Route::resource('/slideshows','App\Http\Controllers\SlideshowController');
+    Route::post('/slideshows/update','App\Http\Controllers\SlideshowController@update');
+    Route::get('/slideshows/destroy/{id}', 'App\Http\Controllers\SlideshowController@destroy')->name('slideshows.delete');
 
+    Route::resource('/informations','App\Http\Controllers\InformationController');
+    Route::post('/informations/update','App\Http\Controllers\InformationController@update');
+    Route::get('/informations/destroy/{id}', 'App\Http\Controllers\InformationController@destroy')->name('informations.delete');
+    
+    Route::resource('/family_card','App\Http\Controllers\FamilyCardDataController');
+    Route::post('/family_card/update','App\Http\Controllers\FamilyCardDataController@update');
+    Route::get('/family_card/destroy/{id}', 'App\Http\Controllers\FamilyCardDataController@destroy')->name('family.card.delete');
     
 });
 

@@ -80,25 +80,15 @@ class ComplaintController extends Controller
 
     public function update(Request $request)
     {
-        $offer = CouponOffer::find($request->get('coupon_id'));
-        $offer->offer_name = $request['name'];
-        $offer->offer_categories_id = $request['offer_cat'];
-        $img_url = '';
-        $img = $request->file('img');
-        if($img != null){
-            $image_name  = uniqid().'.'.$img->getClientOriginalExtension();
-            $destination = 'storage/Couponoffers';
-            $img->move($destination, $image_name );
-            $img_url = $request->getSchemeAndHttpHost().'/storage/Couponoffers/'.$image_name;
-        }
-        $offer->picture = $img_url;
-        $offer->description = $request['details'];
-        $offer->from_dt = $request['from'];
-        $offer->to_dt = $request['to'];
-        $offer->contact_no = $request['contact'];
-        $offer->save(); 
+            $complaint = Complaint::find($request->get('complaints_id'));
+            $complaint->name = $request['name'];
+            $complaint->number = $request['contact'];
+            $complaint->email = $request['email'];
+            $complaint->reason = $request['reason'];
+            $complaint->notes = $request['details'];
+            $complaint->save();
 
-        return redirect('/coupon_offer');
+        return redirect('/complaints');
      }
      /**
      * Remove the specified resource from storage.
@@ -108,10 +98,50 @@ class ComplaintController extends Controller
      */
     public function destroy($id)
     {
-         $offer = CouponOffer::find($id);
-         $offer->delete();
-         return Redirect('/coupon_offer')->with('success','Coupon Offer deleted successfully');
+         $Complaint = Complaint::find($id);
+         $Complaint->delete();
+         return Redirect('/complaints')->with('success','Complaint deleted successfully');
 
 
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function complaintView($id)
+    {
+         $complaint = Complaint::find($id);
+        return view("complaint.complaintView",compact('complaint'));
+
+
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function pendingView(Request $request)
+    {
+         $complaint = Complaint::find($request->get('id'));
+         return view("complaint.pendingView",compact('complaint'));
+
+
+    }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  
+     * @return \Illuminate\Http\Response
+     */
+    public function complaintDone(Request $request)
+    {
+         $complaint = Complaint::find($request->get('id'));
+         $complaint->reason = $request->get('status');
+         $complaint->admin_note = $request->get('note');
+         $complaint->save();
+         return 0;
     }
 }
