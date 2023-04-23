@@ -25,7 +25,7 @@
                                     <input type="hidden" name="family_id" value="{{$family->id}}">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.name")}}</label>
-                                        <input type="text" id="name" name="name" required class="form-control" value="{{$family->FCH_SHR_NAME}}">
+                                        <input type="text" id="name" name="name" required class="form-control" value="{{$family->NAME}}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">

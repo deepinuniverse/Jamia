@@ -9,7 +9,7 @@ class FamilyCardData extends Model
 {
     use HasFactory;
     
-    protected $table='family_card_data';
+    protected $table='shareholdersnfamilydata';
     
     public $timestamps = false;
 }

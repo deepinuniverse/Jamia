@@ -32,7 +32,7 @@
 										@foreach ($families as $family)
                                             <tr>
 												<td>{{ $i++; }}</td>
-                                                <td>{{ $family->FCH_SHR_NAME }}</td>
+                                                <td>{{ $family->NAME }}</td>
                                                 <td>{{ $family->SHR_NO }}</td>
                                                 <td>{{ $family->CIVIL_ID }}</td>
                                                 <td>{{ $family->CODE }}</td>
