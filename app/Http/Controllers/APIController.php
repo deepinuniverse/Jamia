@@ -1061,7 +1061,7 @@ class APIController extends Controller
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $familyCardDetails = DB::table('shareholdersnfamilydata')
-                    ->select('barcode_image')
+                    ->select('CODE', 'barcode_Image')
                         ->where('CIVIL_ID', $id)                       
                         ->get();
 
@@ -1071,7 +1071,7 @@ class APIController extends Controller
                     return response()->json(['error' => 'No CIVIL ID found'], 404);
                 }
 
-                if (is_null($familyCardDetails[0]->barcode_image)) {
+                if (is_null($familyCardDetails[0]->CODE)) {
                     return response()->json([
                         'code' => 404,
                         'status' => false,
