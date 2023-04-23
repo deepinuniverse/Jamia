@@ -19,8 +19,8 @@
       Tip 2: you can also add an image using data-image tag
   -->
   <div class="logo">
-    <a href="https://creative-tim.com/" class="simple-text logo-normal">
-      {{ __('jamia.jami') }}
+    <a href="https://ebaakw.com/" class="simple-text logo-normal">
+     <img src="{{ asset('images') }}/logo.jpg" width="100" height="100" > {{ __('jamia.jami') }}
     </a>
   </div>
   <div class="sidebar-wrapper">
@@ -56,17 +56,19 @@
           </ul>
         </div>
       </li> --}}
-      @if(Auth::user()->userpermission(2))
-      <li class="nav-item{{ $activePage == 'coupon_user' ? ' active' : '' }}" >
-        <a class="nav-link" href="/coupon_user">
-          <i class="material-icons">content_paste</i>
-            <p>{{ __('jamia.user') }}</p>
-        </a>
-      </li>
+      @if(Auth::user()->userpermission(2))  
       <li class="nav-item{{ $activePage == 'family_card' ? ' active' : '' }}" >
         <a class="nav-link" href="/family_card">
           <i class="material-icons">content_paste</i>
             <p>{{ __('jamia.user') }}</p>
+        </a>
+      </li>
+      @endif
+      @if(Auth::user()->userpermission(18))
+      <li class="nav-item{{ $activePage == 'profit' ? ' active' : '' }}" >
+        <a class="nav-link" href="/customer_profit">
+          <i class="material-icons">content_paste</i>
+            <p>{{ __('jamia.profit') }}</p>
         </a>
       </li>
       @endif
@@ -190,16 +192,17 @@
           <i class="material-icons">content_paste</i>
             <p>{{ __('jamia.slideshows') }}</p>
         </a>
-      </li>
+      </li> 
       @endif
       @if(Auth::user()->userpermission(17))
-      <li class="nav-item{{ $activePage == 'slideshows' ? ' active' : '' }}" >
+      <li class="nav-item{{ $activePage == 'informations' ? ' active' : '' }}" >
         <a class="nav-link" href="/informations">
           <i class="material-icons">content_paste</i>
             <p>{{ __('jamia.information') }}</p>
         </a>
       </li>
       @endif
+      
     </ul>
   </div>
 </div>

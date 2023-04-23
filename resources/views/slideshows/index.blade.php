@@ -24,7 +24,6 @@
 										<th>{{__("jamia.sl_no")}}</th>
                                         <th>{{__("jamia.name")}}</th>
                                         <th>{{__("jamia.image")}}</th>
-                                        <th>{{__("jamia.date")}}</th>
                                         <th>{{__("jamia.action") }}</th>
 									</thead>
 									<tbody><?php $i=1; ?>
@@ -33,7 +32,6 @@
 												<td>{{ $i++; }}</td>
                                                 <td>{{ $slideshow->name }}</td>
                                                 <td><img width="75" height="75" src="{{$slideshow->image}}" alt="image"></td>
-                                                <td>{{date('d-m-Y',strtotime($slideshow->created_dt))}}</td>
                                                 <td>
 													<a  href="/slideshows/{{$slideshow->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs"><i class="fa fa-edit"></i></a>	
                                                     <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$slideshow->id}}">

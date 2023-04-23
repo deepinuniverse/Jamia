@@ -68,6 +68,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/galleries/update','App\Http\Controllers\GalleryController@update');
     Route::get('/galleries/destroy/{id}', 'App\Http\Controllers\GalleryController@destroy')->name('galleries.delete');
     Route::get('/galley/photo/destroy/{id}', 'App\Http\Controllers\GalleryController@destroyPhoto')->name('galley.photo.delete');
+    Route::get('/galley/photo/view/{id}','App\Http\Controllers\GalleryController@View');
 
 	Route::resource('/medias','App\Http\Controllers\SocialmediaController');
 	Route::get('/medias/destroy/{id}', 'App\Http\Controllers\SocialmediaController@destroy')->name('medias.delete');
@@ -121,7 +122,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/family_card','App\Http\Controllers\FamilyCardDataController');
     Route::post('/family_card/update','App\Http\Controllers\FamilyCardDataController@update');
     Route::get('/family_card/destroy/{id}', 'App\Http\Controllers\FamilyCardDataController@destroy')->name('family.card.delete');
-    
+    Route::get('/family_card/generate/barcode', 'App\Http\Controllers\FamilyCardDataController@generateBarcodeShow')->name('family.card.generate.barcode');
+
+    Route::resource('/customer_profit','App\Http\Controllers\CustomerProfitController');
+    Route::post('/customer_profit/update','App\Http\Controllers\CustomerProfitController@update');
+    Route::get('/customer_profit/destroy/{id}', 'App\Http\Controllers\CustomerProfitController@destroy')->name('customer.profit.delete');
 });
 
 

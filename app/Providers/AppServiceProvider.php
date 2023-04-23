@@ -33,16 +33,19 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
          view()->composer('layouts.navbars.sidebar', function ($view) {
             $view->with('discardCount',
-                DiscardReport::whereIn('status', ['RECEIVED','UNDERPROCESS'])->count());
-            $view->with('complaintCount',Complaint::whereIn('reason', ['RECEIVED','UNDERPROCESS'])->count());
+                DiscardReport::whereIn('status', ['GENERATED','UNDERPROCESS'])->count());
+            $view->with('complaintCount',Complaint::whereIn('reason', ['GENERATED','UNDERPROCESS'])->count());
         });
         view()->composer('dashboard', function ($view) {
             $view->with('discardCount',
-                DiscardReport::whereIn('status', ['RECEIVED','UNDERPROCESS'])->count());
-            $view->with('complaintCount',Complaint::whereIn('reason', ['RECEIVED','UNDERPROCESS'])->count());
+                DiscardReport::whereIn('status', ['GENERATED','UNDERPROCESS'])->count());
+            $view->with('complaintCount',Complaint::whereIn('reason', ['GENERATED','UNDERPROCESS'])->count());
             $view->with('notification',Notification::where('created_dt','=',date('Y-m-d'))->count());
             $view->with('offers',Offer::where('from_dt','>=',date('Y-m-d'))
                                       ->where('to_dt','<=',date('Y-m-d'))->count());
+            $view->with('discardList',
+                DiscardReport::orderBy('report_dt','desc')->limit(5)->get());
+            $view->with('complaintList',Complaint::orderBy('id','desc')->limit(5)->get());
         });
 
     }

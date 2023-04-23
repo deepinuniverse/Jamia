@@ -45,7 +45,7 @@
                                         <input type="date" id="g_date" name="g_date"  class="form-control" value="{{$gallery->date}}" required>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.status")}}</label>
                                         <select class="form-control status" name="status" required id="status" >
@@ -55,19 +55,24 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <input type="file" class="xy" name="images[]" multiple>
-                                </div>
+                                
+                                <table class="img_tab"> 
+                                <tbody>
                                 @if(count($gal_images) != 0)
                                 @foreach($gal_images as $gal)
-                                <div class="img-wrap">
-                                  
-                                  <span class="close g_img"  id="{{$gal->id}}" style="display: none;">&times;</span>
-                                  <img width="75" height="75"  src="{{$gal->photo}}" alt="image" class="g_img" id="{{$gal->id}}">
-                                </div>
-                                </br>
+                                <tr>
+                                    <td><img width="75" height="75"  src="{{$gal->photo}}" alt="image" class="g_img" id="{{$gal->id}}"></td>
+                                    <td><button type="button" class="img_delete btn-danger" id="{{$gal->id}}"><i class='fa fa-trash'></i></button></td>
+                                </tr>
                                 @endforeach
                                 @endif
+                                <tr><td><input type="file" name="images[]" multiple></td>
+                                    <td><button type="button" class="add_img btn-success"><i class='fa fa-plus'></i></button></td>
+                                </tr>
+                                </tbody> 
+                                </table>
+                                </br>
+                                
                                 <div class="col-md-12 p-3">
                                     <input type="submit" value="{{ __("jamia.update") }}" class="btn btn-primary">
                                 </div>
@@ -83,15 +88,24 @@
 @section('js')
     <script >
               
-      $(document).on("change",".status", function() {alert(0);
-         var  = $(this).attr("id"); 
+      
+      $(document).on("click",".add_img", function() {
+         $('.img_tab tbody').append("<tr><td><input type='file' name='images[]' multiple><button type='button' class='add_img btn-success'><i class='fa fa-plus'></i></button></td><td><button type='button' class='delete_img btn-danger'><i class='fa fa-trash' ></i></button></td></tr>");
+      });
+       $(document).on("click",".delete_img", function() {
+         $(this).closest("tr").remove();
+      });
+      $(document).on("click",".img_delete", function() {
+        var id = $(this).attr("id"); 
           if(confirm("Do you want to delete this Image?") == true){
-            $(this).remove();
+            
             $.getJSON("/galley/photo/destroy/" + id, (response) => {
-                alert(0);
-            });
 
+            });
+           
+            $(this).closest("tr").remove();
           }
+         
       });
     </script>
 @endsection

@@ -62,7 +62,7 @@
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.action")}}</label>
                                         <select class="form-control" name="action" id="action">
-                                        <option value='0'>--Select--</option>
+                                        <option value="Active" {{($user->action == "Active") ? 'selected' : ''}}>Active</option>
                                         <option value="Block" {{($user->action == "Block") ? 'selected' : ''}}>Block</option>
                                         <option value="Freeze" {{($user->action == "Freeze") ? 'selected' : ''}}>Freeze</option>
                                         <option value="Reject" {{($user->action == "Reject") ? 'selected' : ''}}>Reject</option>

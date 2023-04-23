@@ -26,13 +26,13 @@
                                         <textarea class="form-control" id="slideName" name="slideName" required></textarea>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-6" style="display:none;">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.date")}}</label>
                                         <input type="date" id="cr_dt" value="{{date('Y-m-d')}}" name="cr_dt" class="form-control">
                                         </div>
                                 </div>
-                                <div class="col-md-12">
+                                <div class="col-md-6">
                                     <input type="file" name="img" required>
                                 </div>
                                 <div class="col-md-12 p-3">

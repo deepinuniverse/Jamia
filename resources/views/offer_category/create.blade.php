@@ -20,11 +20,14 @@
                         <form action="/offer_category" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-md-12 eng_sh">
+                                <div class="col-md-6 eng_sh">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.name")}}</label>
                                         <input type="text" id="nm" name="name"  class="form-control" required>
                                     </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="file" name="img" required>
                                 </div>
                                 <div class="col-md-12 p-3">
                                     <input type="submit" value="{{ __("jamia.add") }}" class="btn btn-primary">

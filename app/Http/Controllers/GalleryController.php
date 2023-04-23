@@ -147,4 +147,15 @@ class GalleryController extends Controller
 
 
     }
+    public function view($id)
+    {
+        //
+        try {
+            $gallery = Gallery::find($id);
+            $galley_pics = GalleryPhoto::where('galleries_id','=',$id)->get();
+            return view('galleries.view',compact('gallery','galley_pics'));
+        } catch (\Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }

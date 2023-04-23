@@ -22,6 +22,7 @@
 									<thead class=" text-primary">
 										<th>{{__("jamia.sl_no")}}</th>
                                         <th>{{__("jamia.name")}}</th>
+                                        <th>{{__("jamia.image")}}</th>
                                         <th>{{__("jamia.action") }}</th>
 									</thead>
 									<tbody><?php $i=1; ?>
@@ -30,6 +31,9 @@
 											<tr>
 												<td>{{ $i++; }}</td>
                                                 <td>{{ $offer->name }}</td>
+                                                <td>
+                                                    <img width="75" height="75" src="{{$offer->image}}" alt="image">
+                                                </td>
                                                 <td>
 													<a  href="/offer_category/{{$offer->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs">
                                                     <i class="fa fa-edit"></i></a>			<button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$offer->id}}"><i class="fa fa-times"></i></button>

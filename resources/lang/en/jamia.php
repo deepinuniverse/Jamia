@@ -95,8 +95,9 @@ return [
     'cr_slideshows' => 'Create Slide Shows',
     'information' => 'Informations',
     'cr_information' => 'Create Informations',
-    'card_no' => 'CARD NUMBER',
-    'code' => 'Code'
-
+    'code' => 'Code',
+    'profit' => 'Customer Profit Title',
+    'cr_profile' => 'Create Profile Title',
+    
 
 ];

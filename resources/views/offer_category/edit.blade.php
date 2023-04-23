@@ -27,6 +27,9 @@
                                         <input type="text" id="nm" name="name"  class="form-control" value="{{$offer->name}}" required>
                                     </div>
                                 </div>
+                                <div class="col-md-6">
+                                    <input type="file" name="img" >
+                                </div>
                                 <div class="col-md-12 p-3">
                                     <input type="submit" value="{{ __("jamia.update") }}" class="btn btn-primary">
                                 </div>

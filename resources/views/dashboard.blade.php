@@ -10,7 +10,7 @@
               <div class="card-icon">
                 <i class="fa fa-book" aria-hidden="true"></i>
               </div>
-              <p class="card-category">Today's Discard Reports</p>
+              <p class="card-category">{{ __('jamia.discard') }}</p>
               <h3 class="card-title">{{$discardCount}}
                 
               </h3>
@@ -25,7 +25,7 @@
               <div class="card-icon">
                 <i class="fa fa-bell-o" aria-hidden="true"></i>
               </div>
-              <p class="card-category">Today's Notifications</p>
+              <p class="card-category">{{ __('jamia.notification') }}</p>
               <h3 class="card-title">{{$notification}}</h3>
             </div>
             <div class="card-footer">
@@ -38,7 +38,7 @@
               <div class="card-icon">
                 <i class="fa fa-envelope-open-o" aria-hidden="true"></i>
               </div>
-              <p class="card-category">Today's Complaints</p>
+              <p class="card-category">{{ __('jamia.complaint') }} </p>
               <h3 class="card-title">{{$complaintCount}}</h3>
             </div>
             <div class="card-footer">
@@ -51,7 +51,7 @@
               <div class="card-icon">
                 <i class="fa fa-clock-o" aria-hidden="true"></i>
               </div>
-              <p class="card-category">Today's Offer</p>
+              <p class="card-category">{{ __('jamia.offer') }}</p>
               <h3 class="card-title">{{$offers}}</h3>
             </div>
             <div class="card-footer">
@@ -68,7 +68,7 @@
             <div class="card-header card-header-tabs card-header-primary">
               <div class="nav-tabs-navigation">
                 <div class="nav-tabs-wrapper">
-                  <span class="nav-tabs-title">Latest 5 Notifications</span>
+                  <h4 class="card-title">{{ __("jamia.discard") }}</h4>
                   <ul class="nav nav-tabs" data-tabs="tabs">
                   </ul>
                 </div>
@@ -79,140 +79,31 @@
                 <div class="tab-pane active" id="profile">
                   <table class="table">
                     <tbody>
+                      
+                      @foreach($discardList as $list)
                       <tr>
                         <td>
                           <div class="form-check">
                             <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked>
+                              <input class="form-check-input" type="checkbox" value="" >
                               <span class="form-check-sign">
                                 <span class="check"></span>
                               </span>
                             </label>
                           </div>
                         </td>
-                        <td>Sign contract for "What are conference organizers afraid of?"</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
+                        <td>{{ $list->item_name }}</td>
+                        <td>{{ date('d-m-Y',strtotime($list->report_dt)) }}</td>
                       </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked>
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                      @endforeach
+                      
                     </tbody>
                   </table>
                 </div>
                 <div class="tab-pane" id="messages">
                   <table class="table">
                     <tbody>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="" checked>
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                        </td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <div class="form-check">
-                            <label class="form-check-label">
-                              <input class="form-check-input" type="checkbox" value="">
-                              <span class="form-check-sign">
-                                <span class="check"></span>
-                              </span>
-                            </label>
-                          </div>
-                        </td>
-                        <td>Sign contract for "What are conference organizers afraid of?"</td>
-                        <td class="td-actions text-right">
-                          <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                            <i class="material-icons">edit</i>
-                          </button>
-                          <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                            <i class="material-icons">close</i>
-                          </button>
-                        </td>
-                      </tr>
+                      
                     </tbody>
                   </table>
                 </div>
@@ -293,42 +184,27 @@
         <div class="col-lg-6 col-md-12">
           <div class="card">
             <div class="card-header card-header-warning">
-              <h4 class="card-title">Employees Stats</h4>
-              <p class="card-category">New employees on 15th September, 2016</p>
+              <h4 class="card-title">{{ __("jamia.complaint") }}</h4>
+              <p class="card-category"></p>
             </div>
             <div class="card-body table-responsive">
               <table class="table table-hover">
                 <thead class="text-warning">
                   <th>ID</th>
-                  <th>Name</th>
-                  <th>Salary</th>
-                  <th>Country</th>
+                  <th>{{__("jamia.customer")}}</th>
+                  <th>{{__("jamia.date")}}</th>
+                  <th>{{__("jamia.cust_phone")}}</th>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Dakota Rice</td>
-                    <td>$36,738</td>
-                    <td>Niger</td>
+                  <?php $i=1; ?>
+                  @foreach($complaintList as $list)
+                  <tr>  
+                     <td>{{ $i++; }}</td>
+                     <td>{{ $list->name }}</td>
+                     <td>{{ date('d-m-Y',strtotime($list->created_at)) }}</td>
+                     <td>{{ $list->number}}</td>
                   </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Minerva Hooper</td>
-                    <td>$23,789</td>
-                    <td>Curaçao</td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Sage Rodriguez</td>
-                    <td>$56,142</td>
-                    <td>Netherlands</td>
-                  </tr>
-                  <tr>
-                    <td>4</td>
-                    <td>Philip Chaney</td>
-                    <td>$38,735</td>
-                    <td>Korea, South</td>
-                  </tr>
+                  @endforeach  
                 </tbody>
               </table>
             </div>

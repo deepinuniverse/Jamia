@@ -43,6 +43,14 @@ class OfferCategoryController extends Controller
         try {
             $offer = new OfferCategory();
             $offer->name = $request['name'];
+            $img = $request->file('img');
+            if($img != null){
+            $image_name  = uniqid().'.'.$img->getClientOriginalExtension();
+            $destination = 'storage/offerCat';
+            $img->move($destination, $image_name );
+            $img_url = $request->getSchemeAndHttpHost().'/storage/offerCat/'.$image_name;
+            }
+            $offer->image = $img_url;
             $offer->save();
             return redirect('/offer_category');
         } catch (\Exception $e) {
@@ -78,6 +86,15 @@ class OfferCategoryController extends Controller
     {
         $offer = OfferCategory::find($request->get('offer_id'));
         $offer->name = $request['name'];
+        $img = $request->file('img');
+        if($img != null){
+            $image_name  = uniqid().'.'.$img->getClientOriginalExtension();
+            $destination = 'storage/offerCat';
+            $img->move($destination, $image_name );
+            $img_url = $request->getSchemeAndHttpHost().'/storage/offerCat/'.$image_name;
+        $offer->image = $img_url;
+        }
+            
         $offer->save(); 
 
         return redirect('/offer_category');

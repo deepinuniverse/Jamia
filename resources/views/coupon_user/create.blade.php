@@ -61,7 +61,7 @@
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.action")}}</label>
                                         <select class="form-control" name="action" id="action">
-                                        <option value='0'>--Select--</option>
+                                        <option value="Active">Active</option>
                                         <option value="Block">Block</option>
                                         <option value="Freeze">Freeze</option>
                                         <option value="Reject">Reject</option>

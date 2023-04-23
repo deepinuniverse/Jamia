@@ -18,12 +18,7 @@ class DiscardReportController extends Controller
         //
         try {
            
-
-           if(Auth::user()->role == '4'){
-              $reports = DiscardReport::whereIn('status', ['RECEIVED','UNDERPROCESS'])->orderBy('report_dt','desc')->get();  
-            }else{
-              $reports = DiscardReport::where('status','=','DONE')->orderBy('report_dt','desc')->get();  
-            }
+            $reports = DiscardReport::orderBy('report_dt','desc')->get();  
             
             return view('discard_report.index',['reports'=>$reports]);
         } catch (\Exception $e) {

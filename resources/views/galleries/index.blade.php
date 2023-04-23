@@ -36,7 +36,7 @@
                                                 <td>{{ $gallery->status }}</td>
                                                 <td>
 													<a  href="/galleries/{{$gallery->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs">
-                                                    <i class="fa fa-edit"></i></a>			<button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$gallery->id}}"><i class="fa fa-times"></i></button><a  href="/galleries/{{$gallery->id}}" rel="tooltip" title={{__("view") }} class="btn btn-success btn-simple btn-xs">
+                                                    <i class="fa fa-edit"></i></a>			<button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$gallery->id}}"><i class="fa fa-times"></i></button><a  href="/galley/photo/view/{{$gallery->id}}" rel="tooltip" title={{__("view") }} class="btn btn-success btn-simple btn-xs">
                                                     <i class="fa fa-eye"></i></a> 
                                                 </td>
                                              </tr>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\FamilyCardData;
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 class FamilyCardDataController extends Controller
 {
@@ -41,11 +42,11 @@ class FamilyCardDataController extends Controller
     {
         
             $family = new FamilyCardData();
-            $family->CARD_NO = $request['name'];
-            $family->FCH_SHR_NAME = $request['email'];
-            $family->SHR_NO = $request['phone'];
-            $family->CIVIL_ID  = $request['sh_holder'];
-            $family->CODE  = $request['civil'];
+            $family->FCH_SHR_NAME = $request['name'];
+            $family->SHR_NO = $request['sh_holder'];
+            $family->CIVIL_ID  = $request['civil'];
+            $family->CODE  = $request['code'];
+            $family->status  = $request['action'];
             $family->save();
             
            
@@ -62,8 +63,8 @@ class FamilyCardDataController extends Controller
     {
        
         try {
-            $user = CouponUser::find($id);
-            return view("coupon_user.edit",compact('user'));
+            $family = FamilyCardData::find($id);
+            return view("family_card.edit",compact('family'));
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -79,25 +80,16 @@ class FamilyCardDataController extends Controller
 
     public function update(Request $request)
     {
-            if($request->has('ge_reports')){
-                $reports = 'Y';
-            }else{
-                $reports = 'N';
-            }
-            $user = CouponUser::find($request->get('user_id'));
-            $user->username = $request['name'];
-            $user->email = $request['email'];
-            $user->phone = $request['phone'];
-            if($user->password != null){
-              $user->password = Hash::make($request['pwd']);  
-            }
-            $user->shareholder_no  = $request['sh_holder'];
-            $user->civil_id  = $request['civil'];
-            $user->action  = $request['action'];
-            $user->generate_reports  = $reports;
-            $user->save();
-
-        return redirect('/coupon_user');
+            $family = FamilyCardData::find($request->get('family_id'));
+            $family->FCH_SHR_NAME = $request['name'];
+            $family->SHR_NO = $request['sh_holder'];
+            $family->CIVIL_ID  = $request['civil'];
+            $family->CODE  = $request['code'];
+            $family->status  = $request['action'];
+            $family->save();
+            
+           
+            return redirect('/family_card');
      }
      /**
      * Remove the specified resource from storage.
@@ -107,10 +99,29 @@ class FamilyCardDataController extends Controller
      */
     public function destroy($id)
     {
-         $user = CouponUser::find($id);
-         $user->delete();
-         return Redirect('/coupon_user')->with('success','User deleted successfully');
+         $family = FamilyCardData::find($id);
+         $family->delete();
+         return Redirect('/family_card')->with('success','User deleted successfully');
 
 
     }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Category  $category
+     * @return \Illuminate\Http\Response
+     */
+    public function generateBarcodeShow()
+    {
+        
+         $family = FamilyCardData::where('CODE','>',0)->first();
+         $generator = new BarcodeGeneratorPNG();
+         $barcode = $generator->getBarcode($family->CODE, $generator::TYPE_CODE_128);
+         dd($barcode );
+         $family_data = FamilyCardData::find($family->id);
+         $family_data->barcode = $barcode;
+         $family_data->save();
+         return redirect('/family_card');
+    }
+    
 }
