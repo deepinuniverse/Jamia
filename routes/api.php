@@ -65,6 +65,8 @@ Route::get('/news/{id}', 'App\Http\Controllers\APIController@getNewsbyId');
 // GET offers
 Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
 
+Route::get('/offers/{id}', 'App\Http\Controllers\APIController@getOffersFestivalsByID');
+
 
 // GET Coupen offers Category
 Route::get('/coupenOffersCat/', 'App\Http\Controllers\APIController@getCoupenOffersCat');
@@ -76,8 +78,14 @@ Route::get('/coupenOffers/{id}', 'App\Http\Controllers\APIController@getCoupenOf
 //Get Couper offer list By Category
 Route::get('/coupenOffesByCat/{id}', 'App\Http\Controllers\APIController@getCoupenOffersByCatID');
 
+//Get Gallaries Cate Name
+Route::get('/galleriesCatName/', 'App\Http\Controllers\APIController@getGallaeriesCatName');
+
+//Get Gallaries  Photos By Cat ID
+Route::get('/galleriesPhotosByCatID/{id}', 'App\Http\Controllers\APIController@getGallaeriesPhotoByCatID');
+
 //Get Gallaries
-Route::get('/galleries/', 'App\Http\Controllers\APIController@getGalleries');
+Route::get('/galleries/', 'App\Http\Controllers\APIController@getGallaeriesCatName');
 
 //Get Social Media
 Route::get('/socialMedia/', 'App\Http\Controllers\APIController@getSocialMedia');
@@ -90,6 +98,17 @@ Route::post('/Complaint/Create/', 'App\Http\Controllers\APIController@CreateComp
 
 //Discard Reports
 Route::post('/DiscardReport/Create/', 'App\Http\Controllers\APIController@CreateDiscardReport');
+
+
+//getSlideShows
+Route::get('/slideShows/', 'App\Http\Controllers\APIController@getSlideShows');
+
+//Get Family Data 
+
+Route::get('/familyData/{civilid}', 'App\Http\Controllers\APIController@getFamilyCardBarCodeImage');
+
+Route::get('/ShareHolderProfit/{civilid}', 'App\Http\Controllers\APIController@getShareHolderProfit');
+
 
 
 
