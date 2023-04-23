@@ -110,6 +110,8 @@ Route::get('/familyData/{civilid}', 'App\Http\Controllers\APIController@getFamil
 Route::get('/ShareHolderProfit/{civilid}', 'App\Http\Controllers\APIController@getShareHolderProfit');
 
 
+//Shareholder Profit Title
+Route::get('/ShareHolderProfitTitle/', 'App\Http\Controllers\APIController@getShareHolderProfitTitle');
 
 
 

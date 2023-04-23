@@ -1061,7 +1061,7 @@ class APIController extends Controller
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $familyCardDetails = DB::table('shareholdersnfamilydata')
-                    ->select('CODE', 'barcode_Image')
+                    ->select('CODE')
                         ->where('CIVIL_ID', $id)                       
                         ->get();
 
@@ -1141,6 +1141,37 @@ class APIController extends Controller
                     'code' => 500,
                     'status' => false,
                     'message' => 'Failed to retrieve FamilyData   from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        } 
+
+        public function getShareHolderProfitTitle()
+        {
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                    $customer_profit = DB::table('customer_profit')
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $customer_profit
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve customer_profit   from the database: ' . $e->getMessage()
                 ], 500);
             } catch (\Exception $e) {
                 // If any other exception occurs, create a JSON response with error status, error message, and response code
