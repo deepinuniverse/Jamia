@@ -58,8 +58,7 @@ class BranchController extends Controller
             $img_url = $request->getSchemeAndHttpHost().'/storage/branch/'.$image_name;
             }
             $branch->picture = $img_url;
-            $branch->latitude = $request['lat'];
-            $branch->longitude = $request['lng'];
+            $branch->location = $request['location'];
             $branch->save();
             return redirect('/branches');
         } catch (\Exception $e) {
@@ -109,6 +108,7 @@ class BranchController extends Controller
             $img_url = $request->getSchemeAndHttpHost().'/storage/branch/'.$image_name;
         }
         $branch->picture = $img_url;
+        $branch->location = $request['location'];
         $branch->save();
         return redirect('/branches');
      }
@@ -122,7 +122,7 @@ class BranchController extends Controller
     {
          $Branch = Branch::find($id);
          $Branch->delete();
-         return Redirect('/news')->with('success','Branch deleted successfully');
+         return Redirect('/branches')->with('success','Branch deleted successfully');
 
 
     }

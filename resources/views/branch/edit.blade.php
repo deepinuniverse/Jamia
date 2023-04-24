@@ -56,12 +56,19 @@
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.hours")}}</label>
                                         <input type="text" id="hour" name="hour"  class="form-control" value="{{$branch->hours}}" required>
+                                    </div>    
                                 </div> 
                                 <div class="col-md-6">
                                     <input type="file" name="img">
                                 </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="name">{{ __("jamia.location")}}</label>
+                                        <input type="text" class="form-control" placeholder="location URL" name="location" value="{{$branch->location}}" id="location">
+                                     </div>   
+                                </div> 
                                 <div class="col-md-12 p-3">
-                                    <input type="submit" value="{{ __("jamia.add") }}" class="btn btn-primary">
+                                    <input type="submit" value="{{ __("jamia.update") }}" class="btn btn-primary">
                                 </div>
                             </div>
                         </form>
