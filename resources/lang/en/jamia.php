@@ -79,7 +79,7 @@ return [
     'role' => 'Roles',
     'create_role' => 'Create Roles',
     'permission' => 'Permission',
-    'cr_user' => 'Create User',
+    'cr_user' => 'Create Share Holder',
     'emp' => 'Employees',
     'cr_emp' => 'Create Employee',
     'username' => 'User Name',
