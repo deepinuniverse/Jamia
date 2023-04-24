@@ -105,10 +105,14 @@ Route::get('/slideShows/', 'App\Http\Controllers\APIController@getSlideShows');
 
 //Get Family Data 
 
-Route::get('/familyData/{civilid}', 'App\Http\Controllers\APIController@getFamilyCardBarCodeImage');
+//Route::get('/familyData/{civilid}', 'App\Http\Controllers\APIController@getFamilyCardBarCodeImage');
 
-Route::get('/ShareHolderProfit/{civilid}', 'App\Http\Controllers\APIController@getShareHolderProfit');
+Route::get('/familyData/', 'App\Http\Controllers\APIController@getFamilyCardBarCodeImage');
 
+//Route::get('/ShareHolderProfit/{civilid}/{box_no}', 'App\Http\Controllers\APIController@getShareHolderProfit');
+
+
+Route::get('/ShareHolderProfit/', 'App\Http\Controllers\APIController@getShareHolderProfit');
 
 //Shareholder Profit Title
 Route::get('/ShareHolderProfitTitle/', 'App\Http\Controllers\APIController@getShareHolderProfitTitle');

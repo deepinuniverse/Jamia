@@ -1057,18 +1057,20 @@ class APIController extends Controller
         {
             try {
                
-                    $id = $request['civilid']; // Retrieve 'id' parameter from the request
+                    $id = $request['civil_id'];
+                    $box_no = $request['box_no']; // Retrieve 'id' parameter from the request
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $familyCardDetails = DB::table('shareholdersnfamilydata')
                     ->select('CODE')
-                        ->where('CIVIL_ID', $id)                       
+                        ->where('CIVIL_ID', $id)         
+                        ->where('SHR_NO', $box_no)                   
                         ->get();
 
                         
                 if ($familyCardDetails->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No CIVIL ID found'], 404);
+                    return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
                 }
 
                 if (is_null($familyCardDetails[0]->CODE)) {
@@ -1107,18 +1109,20 @@ class APIController extends Controller
         {
             try {
                
-                    $id = $request['civilid']; // Retrieve 'id' parameter from the request
+                    $id = $request['civil_id']; // Retrieve 'id' parameter from the request
+                    $box_no = $request['box_no'];
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $ShareHolderProfit = DB::table('shareholdersnfamilydata')
                     ->select('PROFIT')
-                        ->where('CIVIL_ID', $id)                       
+                        ->where('CIVIL_ID', $id)                        
+                        ->Where('SHR_NO', $box_no)                    
                         ->get();
 
                         
                 if ($ShareHolderProfit->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No CIVIL ID found'], 404);
+                    return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
                 }
 
                 if (is_null($ShareHolderProfit[0]->PROFIT)) {
@@ -1129,6 +1133,8 @@ class APIController extends Controller
                     ], 404);
                 }
         
+
+                //Depep
                 // Create a JSON response with success status, data, and response code
                 return response()->json([
                     'code' => 200,
