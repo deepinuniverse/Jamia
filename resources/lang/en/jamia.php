@@ -63,7 +63,7 @@ return [
     'civil' => 'Civil Id',
     'action' => 'Action',
     'role' =>'Role',
-    'user' => 'Customer User',
+    'user' => 'Share Holders',
     'instagram' =>'Instagram',
     'twitter' =>'Twitter',
     'facebook' => 'FaceBook',
@@ -98,6 +98,7 @@ return [
     'code' => 'Code',
     'profit' => 'Customer Profit Title',
     'cr_profile' => 'Create Profile Title',
-    
+    'welc_msg' => 'Welcome to JAMIYA!!!!',
+    'hi' => 'Hi'
 
 ];
