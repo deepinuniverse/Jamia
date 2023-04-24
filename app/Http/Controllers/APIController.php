@@ -1062,7 +1062,7 @@ class APIController extends Controller
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $familyCardDetails = DB::table('shareholdersnfamilydata')
-                    ->select('CODE')
+                    ->select('SHR_NO','NAME','CIVIL_ID','CODE','PROFIT')
                         ->where('CIVIL_ID', $id)         
                         ->where('SHR_NO', $box_no)                   
                         ->get();
@@ -1073,13 +1073,13 @@ class APIController extends Controller
                     return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
                 }
 
-                if (is_null($familyCardDetails[0]->CODE)) {
+               /* if (is_null($familyCardDetails[0]->CODE)) {
                     return response()->json([
                         'code' => 404,
                         'status' => false,
                         'message' => 'Family Card Not Applied'
                     ], 404);
-                }
+                } */
         
                 // Create a JSON response with success status, data, and response code
                 return response()->json([
@@ -1114,7 +1114,7 @@ class APIController extends Controller
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
                     $ShareHolderProfit = DB::table('shareholdersnfamilydata')
-                    ->select('PROFIT')
+                    ->select('SHR_NO','NAME','CIVIL_ID','CODE','PROFIT')
                         ->where('CIVIL_ID', $id)                        
                         ->Where('SHR_NO', $box_no)                    
                         ->get();
@@ -1125,13 +1125,13 @@ class APIController extends Controller
                     return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
                 }
 
-                if (is_null($ShareHolderProfit[0]->PROFIT)) {
-                    return response()->json([
-                        'code' => 404,
-                        'status' => false,
-                        'message' => 'No Profit found'
-                    ], 404);
-                }
+                //if (is_null($ShareHolderProfit[0]->PROFIT)) {
+                  //  return response()->json([
+                    //    'code' => 404,
+                    //    'status' => false,
+                    //    'message' => 'No Profit found'
+                   // ], 404);
+               // }
         
 
                 //Depep
