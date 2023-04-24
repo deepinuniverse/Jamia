@@ -1,10 +1,10 @@
-@extends('layouts.app', ['class' => 'off-canvas-sidebar', 'activePage' => 'login', 'title' => __('Jamiya Dashboard')])
+@extends('layouts.app', ['class' => 'off-canvas-sidebar', 'activePage' => 'login', 'title' => __('jamia.jami_dash')])
 
 @section('content')
 <div class="container" style="height: auto;">
   <div class="row align-items-center">
     <div class="col-md-9 ml-auto mr-auto mb-3 text-center">
-      <h3>{{ __('Log in to your account') }} </h3>
+      <h3>{{ __('jamia.login_msg') }} </h3>
     </div>
     <div class="col-lg-4 col-md-6 col-sm-8 ml-auto mr-auto">
       <form class="form" method="POST" action="{{ route('login') }}">
@@ -12,7 +12,7 @@
 
         <div class="card card-login card-hidden mb-3">
           <div class="card-header card-header-primary text-center">
-            <h4 class="card-title"><strong>{{ __('Login') }}</strong></h4>
+            <h4 class="card-title"><strong>{{ __('jamia.login') }}</strong></h4>
             <div class="social-line">
               
             </div>
@@ -26,7 +26,7 @@
                     <i class="material-icons">email</i>
                   </span>
                 </div>
-                <input type="email" name="email" class="form-control" placeholder="{{ __('Email...') }}" value="" required>
+                <input type="email" name="email" class="form-control" placeholder="{{ __('jamia.email') }}" value="" required>
               </div>
               @if ($errors->has('email'))
                 <div id="email-error" class="error text-danger pl-3" for="email" style="display: block;">
@@ -41,7 +41,7 @@
                     <i class="material-icons">lock_outline</i>
                   </span>
                 </div>
-                <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('Password...') }}" value="" required>
+                <input type="password" name="password" id="password" class="form-control" placeholder="{{ __('jamia.password') }}" value="" required>
               </div>
               @if ($errors->has('password'))
                 <div id="password-error" class="error text-danger pl-3" for="password" style="display: block;">
@@ -59,7 +59,7 @@
             </div>
           </div>
           <div class="card-footer justify-content-center">
-            <button type="submit" class="btn btn-primary btn-link btn-lg">{{ __('Lets Go') }}</button>
+            <button type="submit" class="btn btn-primary btn-link btn-lg">{{ __('jamia.letsgo') }}</button>
           </div>
         </div>
       </form>

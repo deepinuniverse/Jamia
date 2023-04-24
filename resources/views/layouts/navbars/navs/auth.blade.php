@@ -40,9 +40,9 @@
             </p>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownProfile">
-            <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="material-icons">person</i>{{ __('Profile') }}</a>
+            <a class="dropdown-item" href="{{ route('profile.edit') }}"><i class="material-icons">person</i>{{ __('jamia.profile') }}</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="material-icons">logout</i>{{ __('Log out') }}</a>
+            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="material-icons">logout</i>{{ __('jamia.logout') }}</a>
           </div>
         </li>
       </ul>

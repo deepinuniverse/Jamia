@@ -20,7 +20,7 @@
   -->
   <div class="logo">
     <a href="https://ebaakw.com/" class="simple-text logo-normal">
-     <img src="{{ asset('images') }}/logo.jpg" width="100" height="100" > {{ __('jamia.jami') }}
+     <img src="{{ asset('images') }}/logojami.png" width="100" height="100" > {{ __('jamia.jami') }}
     </a>
   </div>
   <div class="sidebar-wrapper">

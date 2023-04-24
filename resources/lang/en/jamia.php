@@ -67,7 +67,7 @@ return [
     'instagram' =>'Instagram',
     'twitter' =>'Twitter',
     'facebook' => 'FaceBook',
-    'linkedin' => 'LinkedIn',
+    'linkedin' => 'WhatsApp',
     'social' => 'Social Medias',
     'cr_social' => 'Create Social Medias',
     'brch' => 'Branch',
@@ -99,6 +99,14 @@ return [
     'profit' => 'Customer Profit Title',
     'cr_profile' => 'Create Profile Title',
     'welc_msg' => 'Welcome to JAMIYA!!!!',
-    'hi' => 'Hi'
+    'hi' => 'Hi',
+    'profile' => 'Profile',
+    'logout' => 'Log Out',
+    'login'  => 'Login',
+    'login_msg' => 'Log in to your account',
+    'jami_dash' => 'Jamiya Dashboard',
+    'password'  => 'Password',
+    'email'  => 'Email',
+    'letsgo' => 'LETS GO'
 
 ];
