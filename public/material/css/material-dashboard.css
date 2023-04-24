@@ -159,7 +159,7 @@ sup {
 }
 
 a {
-  color: #9c27b0;
+  color: #0000FF;
   text-decoration: none;
   background-color: transparent;
   -webkit-text-decoration-skip: objects;
@@ -3942,7 +3942,7 @@ tbody.collapse.show {
 }
 
 .custom-radio .custom-control-input:checked~.custom-control-label::after {
-  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E");
+  background-image: url("");
 }
 
 .custom-radio .custom-control-input:disabled:checked~.custom-control-label::before {
@@ -13755,7 +13755,7 @@ h2.title {
 }
 
 .text-primary {
-  color: #9c27b0 !important;
+  color: #0000FF !important;
 }
 
 .text-danger {
@@ -16309,7 +16309,7 @@ legend {
 }
 
 a {
-  color: #9c27b0;
+  color: #0000FF;
 }
 
 a:hover,
@@ -16777,7 +16777,7 @@ label {
 .card.bg-primary,
 .card.card-rotate.bg-primary .front,
 .card.card-rotate.bg-primary .back {
-  background: linear-gradient(60deg, #ab47bc, #8e24aa);
+  background: linear-gradient(60deg, #0000FF, #0000FF);
 }
 
 .card .card-header-info .card-icon,

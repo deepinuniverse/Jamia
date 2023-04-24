@@ -63,7 +63,7 @@ return [
     'civil' => 'Civil Id',
     'action' => 'Action',
     'role' =>'Role',
-    'user' => 'Customer User',
+    'user' => 'Share Holders',
     'instagram' =>'Instagram',
     'twitter' =>'Twitter',
     'facebook' => 'FaceBook',
@@ -79,7 +79,7 @@ return [
     'role' => 'Roles',
     'create_role' => 'Create Roles',
     'permission' => 'Permission',
-    'cr_user' => 'Create User',
+    'cr_user' => 'Create Share Holder',
     'emp' => 'Employees',
     'cr_emp' => 'Create Employee',
     'username' => 'User Name',
@@ -98,6 +98,7 @@ return [
     'code' => 'Code',
     'profit' => 'Customer Profit Title',
     'cr_profile' => 'Create Profile Title',
-    
+    'welc_msg' => 'Welcome to JAMIYA!!!!',
+    'hi' => 'Hi'
 
 ];

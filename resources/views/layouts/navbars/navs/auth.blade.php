@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
   <div class="container-fluid">
     <div class="navbar-wrapper">
-      <a class="navbar-brand" href="#"><i class="material-icons">person</i>&nbsp;Hi&nbsp;&nbsp;{{Auth::user()->name}}.... Welcome to Jamiya!!!</a></a>
+      <a class="navbar-brand" href="#"><i class="material-icons">person</i>&nbsp;{{ __('jamia.hi') }}&nbsp;&nbsp;{{Auth::user()->name}}.... {{ __('jamia.welc_msg') }}</a></a>
     </div>
     <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
     <span class="sr-only">Toggle navigation</span>
