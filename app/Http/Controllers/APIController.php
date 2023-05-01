@@ -421,11 +421,13 @@ class APIController extends Controller
  
                      if ($branches->isEmpty()) {
                          // If no records found, create a JSON response with appropriate error status, message, and response code
-                         return response()->json([
+                        /* return response()->json([
                              'code' => 404,
                              'status' => false,
                              'message' => 'No branches found with the given ID'
-                         ], 404);
+                         ], 404); */
+
+                         return response()->json(['message' => null]);
                      }
  
                  // Create a JSON response with success status, data, and response code
@@ -469,11 +471,13 @@ class APIController extends Controller
 
                     if ($branches->isEmpty()) {
                         // If no records found, create a JSON response with appropriate error status, message, and response code
-                        return response()->json([
+                       /* return response()->json([
                             'code' => 404,
                             'status' => false,
                             'message' => 'No branches found with the given ID'
-                        ], 404);
+                        ], 404);  */
+
+                        return response()->json(['message' => null]);
                     }
 
                 // Create a JSON response with success status, data, and response code
@@ -546,11 +550,13 @@ class APIController extends Controller
 
                 if ($news->isEmpty()) {
                     // If no data is found, create a JSON response with appropriate message, status, and response code
-                    return response()->json([
+                  /*  return response()->json([
                         'code' => 404,
                         'status' => false,
                         'message' => 'No news found'
-                    ], 404);
+                    ], 404); */
+
+                    return response()->json(['message' => null]);
                 }
 
                 // Create a JSON response with success status, data, and response code
@@ -589,7 +595,8 @@ class APIController extends Controller
 
                     if ($offers->isEmpty()) {
                         // No records found
-                        return response()->json(['error' => 'No records found'], 404);
+                       // return response()->json(['error' => 'No records found'], 404);
+                        return response()->json(['message' => null]);
                     }
         
                 // Create a JSON response with success status, data, and response code
@@ -632,7 +639,8 @@ class APIController extends Controller
 
                     if ($offers->isEmpty()) {
                         // No records found
-                        return response()->json(['error' => 'No records found'], 404);
+                        //return response()->json(['error' => 'No records found'], 404);
+                        return response()->json(['message' => null]);
                     }
         
                 // Create a JSON response with success status, data, and response code
@@ -669,7 +677,9 @@ class APIController extends Controller
 
                     if ($offer_categories->isEmpty()) {
                         // No records found
-                        return response()->json(['error' => 'No records found'], 404);
+                        //return response()->json(['error' => 'No records found'], 404);
+
+                        return response()->json(['message' => null]);
                     }
         
                 // Create a JSON response with success status, data, and response code
@@ -708,7 +718,8 @@ class APIController extends Controller
 
                 if ($couponOffers->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No records found'], 404);
+                    //return response()->json(['error' => 'No records found'], 404);
+                    return response()->json(['message' => null]);
                 }
         
                 // Create a JSON response with success status, data, and response code
@@ -750,7 +761,8 @@ class APIController extends Controller
 
                 if ($couponOffer->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No records found'], 404);
+                    //return response()->json(['error' => 'No records found'], 404);
+                    return response()->json(['message' => null]);
                 }
         
                 // Create a JSON response with success status, data, and response code
@@ -791,7 +803,10 @@ class APIController extends Controller
 
                 if ($couponOffer->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No records found'], 404);
+                    //return response()->json(['message' => 'null'], 404);
+                    // return null;
+                    return response()->json(['message' => null]);
+                    
                 }
         
                 // Create a JSON response with success status, data, and response code
@@ -831,7 +846,8 @@ class APIController extends Controller
 
                 if ($gallaryCat->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No records found'], 404);
+                    //return response()->json(['error' => 'No records found'], 404);
+                    return response()->json(['message' => null]);
                 }
         
                 // Create a JSON response with success status, data, and response code
@@ -872,7 +888,8 @@ class APIController extends Controller
 
                 if ($GallaryPhotos->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'No records found'], 404);
+                    //return response()->json(['error' => 'No records found'], 404);
+                    return response()->json(['message' => null]);
                 }
         
                 // Create a JSON response with success status, data, and response code
@@ -1070,7 +1087,9 @@ class APIController extends Controller
                         
                 if ($familyCardDetails->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
+                    //return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
+
+                    return response()->json(['message' => null]);
                 }
 
                /* if (is_null($familyCardDetails[0]->CODE)) {
@@ -1122,7 +1141,9 @@ class APIController extends Controller
                         
                 if ($ShareHolderProfit->isEmpty()) {
                     // No records found
-                    return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
+                    //return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
+
+                    return response()->json(['message' => null]);
                 }
 
                 //if (is_null($ShareHolderProfit[0]->PROFIT)) {
@@ -1178,6 +1199,37 @@ class APIController extends Controller
                     'code' => 500,
                     'status' => false,
                     'message' => 'Failed to retrieve customer_profit   from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (\Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        } 
+
+        public function getaboutUS()
+        {
+            try {
+                // Retrieve branches from the 'branches' table in descending order of creation date               
+
+                    $customer_profit = DB::table('information')
+                    ->get();
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $customer_profit
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve about us  info   from the database: ' . $e->getMessage()
                 ], 500);
             } catch (\Exception $e) {
                 // If any other exception occurs, create a JSON response with error status, error message, and response code
