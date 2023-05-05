@@ -118,7 +118,8 @@ Route::get('/ShareHolderProfit/', 'App\Http\Controllers\APIController@getShareHo
 Route::get('/ShareHolderProfitTitle/', 'App\Http\Controllers\APIController@getShareHolderProfitTitle');
 
 
-
+//about us 
+Route::get('/aboutus/', 'App\Http\Controllers\APIController@getaboutUS');
 
 
 
