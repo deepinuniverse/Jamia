@@ -122,9 +122,13 @@ Route::get('/ShareHolderProfitTitle/', 'App\Http\Controllers\APIController@getSh
 Route::get('/aboutus/', 'App\Http\Controllers\APIController@getaboutUS');
 
 
+//getALLData
+Route::get('/getAlldata/', 'App\Http\Controllers\APIController@getDataFromAllTables');
 
 
+Route::get('/productByName/', 'App\Http\Controllers\APIController@getProductByItemName');
 
+Route::get('/productByItemBarCode/', 'App\Http\Controllers\APIController@getProductByItemBarCode');
 
 
 
