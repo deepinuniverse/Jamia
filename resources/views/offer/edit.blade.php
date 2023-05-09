@@ -54,7 +54,24 @@
                                 </div>
                                
                                 <div class="col-md-6">
-                                    <input type="file" name="img">
+                                    <label for="name">{{ __("jamia.main")}}</label>
+                                    <input type="file" name="img"></br></br>
+                                <table class="img_tab"> 
+                                <tbody>
+                                @if(count($offerImages) != 0)
+                                @foreach($offerImages as $img)
+                                <tr>
+                                    <td><img width="75" height="75"  src="{{$img->image}}" alt="image" class="g_img" id="{{$img->id}}"></td>
+                                    <td><button type="button" class="img_delete btn-danger" id="{{$img->id}}"><i class='fa fa-trash'></i></button></td>
+                                </tr>
+                                @endforeach
+                                @endif
+                                <tr><td><input type="file" name="images[]" multiple></td>
+                                    <td><button type="button" class="add_img btn-success"><i class='fa fa-plus'></i></button></td>
+                                </tr>
+                                </tbody> 
+                                </table>
+                                </br>
                                 </div>
                                 <div class="col-md-12 p-3">
                                     <input type="submit" value="{{ __("jamia.update") }}" class="btn btn-primary">
@@ -67,4 +84,28 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script >
+              
+      
+      $(document).on("click",".add_img", function() {
+         $('.img_tab tbody').append("<tr><td><input type='file' name='images[]' multiple><button type='button' class='add_img btn-success'><i class='fa fa-plus'></i></button></td><td><button type='button' class='delete_img btn-danger'><i class='fa fa-trash' ></i></button></td></tr>");
+      });
+       $(document).on("click",".delete_img", function() {
+         $(this).closest("tr").remove();
+      });
+      $(document).on("click",".img_delete", function() {
+        var id = $(this).attr("id"); 
+          if(confirm("Do you want to delete this Image?") == true){
+            
+            $.getJSON("/offer/images/destroy/" + id, (response) => {
+
+            });
+           
+            $(this).closest("tr").remove();
+          }
+         
+      });
+    </script>
 @endsection

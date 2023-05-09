@@ -46,6 +46,14 @@ class GalleryController extends Controller
             $gallery = new Gallery();
             $gallery->title = $request['name'];
             $gallery->date = $request['g_date'];
+            $img = $request->file('img');
+            if($img != null){
+            $image_nameMain  = uniqid().'.'.$img->getClientOriginalExtension();
+            $destinationMain = 'storage/Gallery';
+            $img->move($destinationMain, $image_nameMain );
+            $imge_url = $request->getSchemeAndHttpHost().'/storage/Gallery/'.$image_nameMain;
+            $gallery->image = $imge_url;
+            }
             $gallery->status = $request['status'];
             $gallery->save();
 
@@ -99,6 +107,14 @@ class GalleryController extends Controller
         $gallery = Gallery::find($request['gallery_id']);
         $gallery->title = $request['name'];
         $gallery->date = $request['g_date'];
+        $img = $request->file('img');
+        if($img != null){
+            $image_nameMain  = uniqid().'.'.$img->getClientOriginalExtension();
+            $destinationMain = 'storage/Gallery';
+            $img->move($destinationMain, $image_nameMain );
+            $imge_url = $request->getSchemeAndHttpHost().'/storage/Gallery/'.$image_nameMain;
+            $gallery->image = $imge_url;
+        }
         $gallery->status = $request['status'];
         $gallery->save();
 

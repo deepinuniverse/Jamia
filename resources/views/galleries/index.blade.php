@@ -24,6 +24,7 @@
                                         <th>{{__("jamia.name")}}</th>
                                         <th>{{__("jamia.date")}}</th>
                                         <th>{{__("jamia.status")}}</th>
+                                        <th>{{__("jamia.image")}}</th>
                                         <th>{{__("jamia.action") }}</th>
 									</thead>
 									<tbody><?php $i=1; ?>
@@ -34,6 +35,9 @@
                                                 <td>{{ $gallery->title }}</td>
                                                 <td>{{ date('d/m/Y',strtotime($gallery->date))}}</td>
                                                 <td>{{ $gallery->status }}</td>
+                                                <td>
+                                                    <img width="75" height="75" src="{{$gallery->image}}" alt="image">
+                                                </td>
                                                 <td>
 													<a  href="/galleries/{{$gallery->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs">
                                                     <i class="fa fa-edit"></i></a>			<button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$gallery->id}}"><i class="fa fa-times"></i></button><a  href="/galley/photo/view/{{$gallery->id}}" rel="tooltip" title={{__("view") }} class="btn btn-success btn-simple btn-xs">

@@ -27,6 +27,12 @@
                                                 <b>{{ $offer->topic }}</b></br>
                                                 <b>{{ $offer->location }}</b></br>
                                                 <b>{{ date('d/m/Y',strtotime($offer->from_dt)) }}-{{ date('d/m/Y',strtotime($offer->to_dt)) }} </b>
+                                                 @if($offerImages != " ")
+                                                 @foreach ($offerImages as $pic)
+                                                 
+                                               <img width="175" height="175"  src="{{$pic->image}}" alt="image" class="g_img" >
+                                               @endforeach
+                                                 @endif
                                              </tr>
 										
 									</tbody>

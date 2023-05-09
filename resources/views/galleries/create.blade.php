@@ -42,7 +42,9 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
+                                <div class="col-md-12">
+                                  <label for="name">{{ __("jamia.main")}}</label>
+                                  <input type="file" name="img"></br></br>
                                   <table class="img_tab">  
                                     <tr><td><input type="file" name="images[]" multiple><button type="button" class="add_img btn-success"><i class='fa fa-plus'></i></button></td></tr>
                                   </table>

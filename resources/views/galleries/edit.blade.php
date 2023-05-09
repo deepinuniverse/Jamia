@@ -55,7 +55,10 @@
                                         </select>
                                     </div>
                                 </div>
-                                
+
+                                <div class="col-md-12">
+                                <label for="name">{{ __("jamia.main")}}</label>
+                                  <input type="file" name="img"></br></br>
                                 <table class="img_tab"> 
                                 <tbody>
                                 @if(count($gal_images) != 0)
@@ -71,6 +74,7 @@
                                 </tr>
                                 </tbody> 
                                 </table>
+                                </div>
                                 </br>
                                 
                                 <div class="col-md-12 p-3">

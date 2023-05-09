@@ -53,7 +53,11 @@
                                 </div>
                                
                                 <div class="col-md-6">
+                                    <label for="name">{{ __("jamia.main")}}</label>
                                     <input type="file" name="img">
+                                    <table class="img_tab"></br></br>  
+                                    <tr><td><input type="file" name="images[]" multiple><button type="button" class="add_img btn-success"><i class='fa fa-plus'></i></button></td></tr>
+                                  </table>
                                 </div>
                                 <div class="col-md-12 p-3">
                                     <input type="submit" value="{{ __("jamia.add") }}" class="btn btn-primary">
@@ -66,4 +70,15 @@
             </div>
         </div>
     </div>
+@endsection
+@section('js')
+    <script>
+      
+      $(document).on("click",".add_img", function() {
+         $('.img_tab').after("<tr><td><input type='file' name='images[]' multiple><button type='button' class='add_img btn-success'><i class='fa fa-plus'></i></button></td><td><button type='button' class='delete_img btn-danger'><i class='fa fa-trash' ></i></button></td></tr>");
+      });
+       $(document).on("click",".delete_img", function() {
+         $(this).closest("tr").remove();
+      });
+    </script>
 @endsection

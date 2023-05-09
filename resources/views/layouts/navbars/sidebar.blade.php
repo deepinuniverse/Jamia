@@ -56,6 +56,14 @@
           </ul>
         </div>
       </li> --}}
+      @if(Auth::user()->userpermission(14)) 
+      <li class="nav-item{{ $activePage == 'products' ? ' active' : '' }}" >
+        <a class="nav-link" href="/products">
+          <i class="material-icons">content_paste</i>
+            <p>{{ __('jamia.product') }}</p>
+        </a>
+      </li>
+      @endif
       @if(Auth::user()->userpermission(2))  
       <li class="nav-item{{ $activePage == 'family_card' ? ' active' : '' }}" >
         <a class="nav-link" href="/family_card">

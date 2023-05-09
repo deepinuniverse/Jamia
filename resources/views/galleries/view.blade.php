@@ -20,7 +20,7 @@
                         	<div class="table-responsive">
                           		<table class="table" id="data-table">
 									<thead class=" text-primary">
-										
+										@if($gallery->image != NULL)<img width="150" height="150" src="{{$gallery->image}}" alt="image">@endif
                                         <tr>
                                             <th>{{__("jamia.name")}} : {{ $gallery->title }}</th>
                                         </tr>

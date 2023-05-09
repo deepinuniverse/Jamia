@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Offer;
+use App\Models\OfferImage;
 
 class OfferController extends Controller
 {
@@ -57,6 +58,21 @@ class OfferController extends Controller
             }
             $offer->photo = $img_url;
             $offer->save();
+            if($request->hasFile('images'))
+            {
+               foreach($request->file('images') as $image)
+               {
+                 $Offer_image_name  = uniqid().'.'.$image->getClientOriginalExtension();
+                 $destinations = 'storage/offers';
+                 $image->move($destinations, $Offer_image_name );
+                 $imges_url = $request->getSchemeAndHttpHost().'/storage/offers/'.$Offer_image_name;
+
+                 $offerImges = new OfferImage();
+                 $offerImges->offers_id = $offer->id;
+                 $offerImges->image = $imges_url;
+                 $offerImges->save();
+               }
+            }
             return redirect('/offers');
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -74,7 +90,8 @@ class OfferController extends Controller
        
         try {
             $offer =Offer::find($id);
-            return view("offer.edit",compact('offer'));
+            $offerImages = OfferImage::where('offers_id','=',$id)->get();
+            return view("offer.edit",compact('offer','offerImages'));
         } catch (\Exception $e) {
             return $e->getMessage();
         }
@@ -106,6 +123,21 @@ class OfferController extends Controller
             $offer->photo = $img_url;
             }
             $offer->save();
+            if($request->hasFile('images'))
+            {
+               foreach($request->file('images') as $image)
+               {
+                 $Offer_image_name  = uniqid().'.'.$image->getClientOriginalExtension();
+                 $destinations = 'storage/offers';
+                 $image->move($destinations, $Offer_image_name );
+                 $imges_url = $request->getSchemeAndHttpHost().'/storage/offers/'.$Offer_image_name;
+
+                 $offerImges = new OfferImage();
+                 $offerImges->offers_id = $request->get('offer_id');
+                 $offerImges->image = $imges_url;
+                 $offerImges->save();
+               }
+            }
             return redirect('/offers');
      }
      /**
@@ -131,7 +163,17 @@ class OfferController extends Controller
     public function view($id)
     {
          $offer = Offer::find($id);
-         return view("offer.view",compact('offer'));
+         $offerImages = OfferImage::where('offers_id','=',$id)->get();
+         return view("offer.view",compact('offer','offerImages'));
+
+
+    }
+
+    public function destroyImages($id)
+    {
+         $offer = OfferImage::find($id);
+         $offer->delete();
+         return Redirect('/offers')->with('success','Offer deleted successfully');
 
 
     }

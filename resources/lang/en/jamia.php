@@ -107,6 +107,15 @@ return [
     'jami_dash' => 'Jamiya Dashboard',
     'password'  => 'Password',
     'email'  => 'Email',
-    'letsgo' => 'LETS GO'
+    'letsgo' => 'LETS GO',
+    'it_bar' => 'Item Barcode',
+    'it_co' => 'Item Code',
+    'it_pr' => 'Item Price',
+    'vendor' => 'Vendor',
+    'product' => 'Products',
+    'delete'  => 'Delete All',
+    'upload' => 'Upload',
+    'main' => 'Main Image'
+
 
 ];

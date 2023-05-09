@@ -127,6 +127,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('/customer_profit','App\Http\Controllers\CustomerProfitController');
     Route::post('/customer_profit/update','App\Http\Controllers\CustomerProfitController@update');
     Route::get('/customer_profit/destroy/{id}', 'App\Http\Controllers\CustomerProfitController@destroy')->name('customer.profit.delete');
+
+    Route::get('/products', 'App\Http\Controllers\ProductController@index')->name('products.list');
+    Route::get('/products/delete', 'App\Http\Controllers\ProductController@delete')->name('products.list');
+     Route::post('/products/upload', 'App\Http\Controllers\ProductController@uploadPdts')->name('products.upload');
+
+     Route::get('/offer/images/destroy/{id}', 'App\Http\Controllers\OfferController@destroyImages')->name('offer.images.destroy');
+
 });
 
 
