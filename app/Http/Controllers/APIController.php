@@ -1242,7 +1242,7 @@ class APIController extends Controller
         } 
 
 
-        public function CreateDeviceF(Request $request){
+        public function CreateDeviceFCM(Request $request){
             try {
                 $complaint = new Complaint();
                 $complaint->name = $request['name'];
@@ -1261,6 +1261,37 @@ class APIController extends Controller
                     'error' => $e->getMessage(),
                 ];
                 return response()->json($error, 200);
+            }
+        }
+
+        public function storeDeviceFCMToken1(Request $request)
+        {
+              
+            $device_fcm_token = $request->input('device_fcm_token');
+            // Insert data into the 'device_fcm_token' table
+            DB::table('device_fcm_token')->insert([                
+                'device_fcm_token' => $device_fcm_token
+            ]);
+    
+            // Return a response, redirect, or perform any other desired actions
+        }
+
+        public function storeDeviceFCMToken(Request $request)
+        {
+            try {
+
+                $device_fcm_token = $request->input('device_fcm_token');
+                
+                // Insert data into the 'device_fcm_token' table
+                DB::table('device_fcm_token')->insert([
+                    'device_fcm_token' => $device_fcm_token
+                ]);
+
+                // Return a success response
+                return response()->json(['message' => 'Data stored successfully'], 200);
+            } catch (\Exception $e) {
+                // Handle the exception and return an error response
+                return response()->json(['message' => 'Failed to store data'], 500);
             }
         }
 

@@ -131,4 +131,6 @@ Route::get('/productByName/', 'App\Http\Controllers\APIController@getProductByIt
 Route::get('/productByItemBarCode/', 'App\Http\Controllers\APIController@getProductByItemBarCode');
 
 
+Route::post('/storeDeviceFCMToken/', 'App\Http\Controllers\APIController@storeDeviceFCMToken');
+
 
