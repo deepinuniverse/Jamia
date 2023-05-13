@@ -65,7 +65,12 @@ Route::get('/news/{id}', 'App\Http\Controllers\APIController@getNewsbyId');
 // GET offers
 Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
 
+//Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
+
+
 Route::get('/offers/{id}', 'App\Http\Controllers\APIController@getOffersFestivalsByID');
+
+Route::get('/offersFestivalsImage/{id}', 'App\Http\Controllers\APIController@getOffersFestivalsImagesDet');
 
 
 // GET Coupen offers Category

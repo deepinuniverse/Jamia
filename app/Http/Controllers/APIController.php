@@ -621,6 +621,53 @@ class APIController extends Controller
                 ], 500);
             }
         } 
+
+
+        public function getOffersFestivalsImagesDet(Request $request)
+        {
+            try {
+                // Retrieve offers from the 'news_details' table in descending order of creation date
+               /* $offersFestivals = DB::table('offers')
+                    ->orderBy('created_at', 'desc')                  
+                    ->get(); */
+
+                    $offersFestivals = DB::table('offers')
+                    ->join('offers_images', 'offers_images.offers_id', '=', 'offers.id')
+                    ->select('offers_images.*')
+                    ->where('offers_images.offers_id', $request['id'])               
+                    ->get();
+
+                   
+
+                    if ($offersFestivals->isEmpty()) {
+                        // No records found
+                       // return response()->json(['error' => 'No records found'], 404);
+                        return response()->json(['message' => null]);
+                    }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $offersFestivals
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve ofsfers  from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        } 
+        
         
         public function getOffersFestivalsByID(Request $request)
         {
