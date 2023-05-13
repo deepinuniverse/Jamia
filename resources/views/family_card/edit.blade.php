@@ -25,7 +25,7 @@
                                     <input type="hidden" name="family_id" value="{{$family->id}}">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.name")}}</label>
-                                        <input type="text" id="name" name="name" required class="form-control" value="{{$family->NAME}}">
+                                        <input type="text" id="name" name="name" required class="form-control" value="{{$family->FCH_SHR_NAME}}">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
@@ -47,6 +47,12 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="name">{{ __("jamia.card_no")}}</label>
+                                        <input type="text" id="card" name="card" required class="form-control" value="{{$family->CARD_NO}}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="display:none;">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.action")}}</label>
                                         <select class="form-control" name="action" id="action">

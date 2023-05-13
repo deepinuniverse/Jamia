@@ -23,7 +23,6 @@ class ProductController extends Controller
    }
    public function uploadPdts(Request $request)
    {
-    
         $import = new ProductImport();
         Excel::import($import, $request->file('img'));
     

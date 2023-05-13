@@ -26,19 +26,21 @@
                                         <th>{{__("jamia.share")}}</th>
                                         <th>{{__("jamia.civil")}}</th>
                                         <th>{{__("jamia.code")}}</th>
+                                        <th>{{__("jamia.card_no")}}</th>
                                         <th>{{__("jamia.action") }}</th>
 									</thead>
 									<tbody><?php $i=1; ?>
 										@foreach ($families as $family)
                                             <tr>
 												<td>{{ $i++; }}</td>
-                                                <td>{{ $family->NAME }}</td>
+                                                <td>{{ $family->FCH_SHR_NAME }}</td>
                                                 <td>{{ $family->SHR_NO }}</td>
                                                 <td>{{ $family->CIVIL_ID }}</td>
                                                 <td>{{ $family->CODE }}</td>
+                                                <td>{{ $family->CARD_NO }}</td>
                                                 <td>
 													<a  href="/family_card/{{$family->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs"><i class="fa fa-edit"></i></a>	
-                                                    <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$family->id}}">
+                                                    <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$family->id}}" style="display:none;">
                                                     <i class="fa fa-times"></i></button>							
                                                 </td>
                                             </tr>

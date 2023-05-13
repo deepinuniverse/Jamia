@@ -42,11 +42,11 @@ class FamilyCardDataController extends Controller
     {
         
             $family = new FamilyCardData();
-            $family->NAME = $request['name'];
+            $family->FCH_SHR_NAME = $request['name'];
             $family->SHR_NO = $request['sh_holder'];
             $family->CIVIL_ID  = $request['civil'];
             $family->CODE  = $request['code'];
-            $family->status  = $request['action'];
+            $family->CARD_NO  = $request['card'];
             $family->save();
             
            
@@ -81,11 +81,11 @@ class FamilyCardDataController extends Controller
     public function update(Request $request)
     {
             $family = FamilyCardData::find($request->get('family_id'));
-            $family->NAME = $request['name'];
+            $family->FCH_SHR_NAME = $request['name'];
             $family->SHR_NO = $request['sh_holder'];
             $family->CIVIL_ID  = $request['civil'];
             $family->CODE  = $request['code'];
-            $family->status  = $request['action'];
+            $family->CARD_NO  = $request['card'];
             $family->save();
             
            

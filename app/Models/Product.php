@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    protected $table='oracledata';
+    protected $table='jamaiya_products';
     protected $fillable = [
     // Other existing fillable attributes
     'ItemBarcode',

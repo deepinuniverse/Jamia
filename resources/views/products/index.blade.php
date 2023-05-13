@@ -32,9 +32,9 @@
                     </div>
                       	<div class="card-body">
                             
-                        	<div class="table-responsive">
+                        	<div class="table-responsive" style="display:none;">
                                 
-                          		<table class="table" id="data-table">
+                          		<table class="table" id="data-table" >
 									<thead class=" text-primary">
 										<th>{{__("jamia.sl_no")}}</th>
                                         <th>{{__("jamia.it_bar")}}</th>

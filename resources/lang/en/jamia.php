@@ -115,7 +115,8 @@ return [
     'product' => 'Products',
     'delete'  => 'Delete All',
     'upload' => 'Upload',
-    'main' => 'Main Image'
+    'main' => 'Main Image',
+    'card_no' => 'CARD NO'
 
 
 ];

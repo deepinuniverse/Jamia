@@ -4,13 +4,16 @@ namespace App\Imports;
 
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToModel;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 use App\Models\Product;
 
-class ProductImport implements ToModel
+class ProductImport implements ToModel, WithChunkReading,ShouldQueue
 {
     /**
     * @param Collection $collection
     */
+
     public function model(array $row)
     {
         
@@ -23,5 +26,9 @@ class ProductImport implements ToModel
         ]);
       
       
+    }
+    public function chunkSize(): int
+    {
+        return 5000;
     }
 }
