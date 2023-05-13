@@ -68,6 +68,11 @@ Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
 //Route::get('/offers/', 'App\Http\Controllers\APIController@getOffersFestivals');
 
 
+Route::get('/offersALL/', 'App\Http\Controllers\APIController@getOffersFestivalsImagesDetALL');
+
+//getOffersFestivalsImagesDetALL
+
+
 Route::get('/offers/{id}', 'App\Http\Controllers\APIController@getOffersFestivalsByID');
 
 Route::get('/offersFestivalsImage/{id}', 'App\Http\Controllers\APIController@getOffersFestivalsImagesDet');

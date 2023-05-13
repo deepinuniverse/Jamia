@@ -620,6 +620,96 @@ class APIController extends Controller
                     'message' => 'An error occurred: ' . $e->getMessage()
                 ], 500);
             }
+        
+        
+        } 
+
+
+        public function getOffersFestivalsImagesDetALL()
+        {
+            try {
+                // Retrieve offers from the 'news_details' table in descending order of creation date
+               /* $offersFestivals = DB::table('offers')
+                    ->orderBy('created_at', 'desc')                  
+                    ->get(); */
+
+                   /* $offersFestivals = DB::table('offers')
+                    ->join('offers_images', 'offers_images.offers_id', '=', 'offers.id')
+                    ->select('offers_images.* ')
+                    ->where('offers_images.offers_id', $request['id'])               
+                    ->get(); */
+
+
+                  /*  $offersFestivals = DB::table('offers')
+                    ->join('offers_images', 'offers_images.offers_id', '=', 'offers.id')
+                    ->select('offers_images.*', 'offers.*')
+                    //->where('offers_images.offers_id', $request['id'])               
+                    ->get(); */
+
+
+                  /*     $offersFestivals = DB::table('offers')
+                    ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+                    ->select('offers.*', 'offers_images.image')
+                    ->get(); */
+                    
+                  /*  $offersFestivals = DB::table('offers')
+                    ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+                    ->select('offers.*', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+                    ->groupBy('offers.id')
+                    ->get(); */
+
+                /*  $offersFestivals = DB::table('offers')
+        ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+        ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+        ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
+        ->get(); */
+
+
+        $offersFestivals = DB::table('offers')
+        ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+       // ->select('offers.*', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+       // ->groupBy('offers.id')
+       ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+        ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
+      
+        ->get();
+
+    $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
+        $offersFestivals->images = explode(',', $offersFestivals->images);
+        return $offersFestivals;
+    });
+
+    return $offersFestivals;
+
+                   
+
+                    if ($offersFestivals->isEmpty()) {
+                        // No records found
+                       // return response()->json(['error' => 'No records found'], 404);
+                        return response()->json(['message' => null]);
+                    }
+        
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $offersFestivals
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve ofsfers  from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
         } 
 
 
@@ -631,9 +721,16 @@ class APIController extends Controller
                     ->orderBy('created_at', 'desc')                  
                     ->get(); */
 
+                   /* $offersFestivals = DB::table('offers')
+                    ->join('offers_images', 'offers_images.offers_id', '=', 'offers.id')
+                    ->select('offers_images.* ')
+                    ->where('offers_images.offers_id', $request['id'])               
+                    ->get(); */
+
+
                     $offersFestivals = DB::table('offers')
                     ->join('offers_images', 'offers_images.offers_id', '=', 'offers.id')
-                    ->select('offers_images.*')
+                    ->select('offers_images.* , offers.*')
                     ->where('offers_images.offers_id', $request['id'])               
                     ->get();
 
@@ -674,17 +771,34 @@ class APIController extends Controller
             try {
                 // Retrieve offers from the 'news_details' table in descending order of creation date
               
-
                     $id = $request['id']; // Retrieve 'id' parameter from the request
                 
                     // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
-                    $offers = DB::table('offers')
+                /*    $offers = DB::table('offers')
                         ->where('id', $id)
                         ->orderBy('created_at', 'desc')
+                        ->get(); */
+
+
+                        $offersFestivals = DB::table('offers')
+                        ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+                       // ->select('offers.*', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+                       // ->groupBy('offers.id')
+                       ->where('offers.id', $request['id'])
+                       ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+                        ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
+                      
                         ->get();
+                
+                    $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
+                        $offersFestivals->images = explode(',', $offersFestivals->images);
+                        return $offersFestivals;
+                    });
+                
+                    return $offersFestivals;
 
 
-                    if ($offers->isEmpty()) {
+                    if ($offersFestivals->isEmpty()) {
                         // No records found
                         //return response()->json(['error' => 'No records found'], 404);
                         return response()->json(['message' => null]);
