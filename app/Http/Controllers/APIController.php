@@ -674,12 +674,17 @@ class APIController extends Controller
       
         ->get();
 
-    $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
+   /* $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
         $offersFestivals->images = explode(',', $offersFestivals->images);
         return $offersFestivals;
+    }); */
+
+    $offersFestivals = $offersFestivals->map(function ($offersFestival) {
+        $offersFestival->images = explode(',', $offersFestival->images);
+        return $offersFestival;
     });
 
-    return $offersFestivals;
+   // return $offersFestivals;
 
                    
 
@@ -712,7 +717,7 @@ class APIController extends Controller
             }
         } 
 
-
+        //Not Used
         public function getOffersFestivalsImagesDet(Request $request)
         {
             try {
@@ -769,16 +774,11 @@ class APIController extends Controller
         public function getOffersFestivalsByID(Request $request)
         {
             try {
-                // Retrieve offers from the 'news_details' table in descending order of creation date
+               
               
                     $id = $request['id']; // Retrieve 'id' parameter from the request
                 
-                    // Retrieve news from the 'news_details' table based on ID and in descending order of creation date
-                /*    $offers = DB::table('offers')
-                        ->where('id', $id)
-                        ->orderBy('created_at', 'desc')
-                        ->get(); */
-
+              
 
                         $offersFestivals = DB::table('offers')
                         ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
@@ -790,12 +790,19 @@ class APIController extends Controller
                       
                         ->get();
                 
-                    $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
+                  /*  $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
                         $offersFestivals->images = explode(',', $offersFestivals->images);
                         return $offersFestivals;
+                    }); */
+
+
+                    $offersFestivals = $offersFestivals->map(function ($offersFestival) {
+                        $offersFestival->images = explode(',', $offersFestival->images);
+                        return $offersFestival;
                     });
+
                 
-                    return $offersFestivals;
+                    //return $offersFestivals;
 
 
                     if ($offersFestivals->isEmpty()) {
@@ -808,7 +815,7 @@ class APIController extends Controller
                 return response()->json([
                     'code' => 200,
                     'status' => true,
-                    'data' => $offers
+                    'data' => $offersFestivals
                 ], 200);
             } catch (QueryException $e) {
                 // If a database query exception occurs, create a JSON response with error status, error message, and response code
@@ -826,6 +833,57 @@ class APIController extends Controller
                 ], 500);
             }
         }   
+
+
+        public function getOffersFestivalsByID_1(Request $request)
+        {
+            try {
+                // Retrieve 'id' parameter from the request
+                $id = $request->input('id');
+
+                $offersFestivals = DB::table('offers')
+                    ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+                    ->where('offers.id', $id)
+                    ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+                    ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
+                    ->get();
+
+                $offersFestivals = $offersFestivals->map(function ($offersFestival) {
+                    $offersFestival->images = explode(',', $offersFestival->images);
+                    return $offersFestival;
+                });
+
+                if ($offersFestivals->isEmpty()) {
+                    // No records found
+                    return response()->json([
+                        'code' => 404,
+                        'status' => false,
+                        'message' => 'No records found'
+                    ], 404);
+                }
+
+                // Create a JSON response with success status, data, and response code
+                return response()->json([
+                    'code' => 200,
+                    'status' => true,
+                    'data' => $offersFestivals
+                ], 200);
+            } catch (QueryException $e) {
+                // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'Failed to retrieve offers from the database: ' . $e->getMessage()
+                ], 500);
+            } catch (Exception $e) {
+                // If any other exception occurs, create a JSON response with error status, error message, and response code
+                return response()->json([
+                    'code' => 500,
+                    'status' => false,
+                    'message' => 'An error occurred: ' . $e->getMessage()
+                ], 500);
+            }
+        }
         
         
         public function getCoupenOffersCat()
