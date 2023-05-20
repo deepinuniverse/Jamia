@@ -35,7 +35,11 @@
                                                 <td>
 													<a  href="/notifications/{{$notification->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs"><i class="fa fa-edit"></i></a>	
                                                     <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$notification->id}}">
-                                                    <i class="fa fa-times"></i></button>							
+                                                    <i class="fa fa-times"></i></button>
+                                                    <button type="button"  rel="tooltip" title={{ __("save") }} class="btn btn-success btn-simple btn-xs save" id="{{$notification->id}}">
+                                                    Save</button>
+                                                    <button type="button"  rel="tooltip" title={{ __("send") }} class="btn btn-primary btn-simple btn-xs send" id="{{$notification->id}}">
+                                                    <i class="fa fa-send"></i></button>							
                                                 </td>
                                             </tr>
 										@endforeach

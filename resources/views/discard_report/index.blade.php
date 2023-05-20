@@ -42,7 +42,7 @@
                                         <td>{{ $report->jamia_name }}</td>
                                         <td>{{ date('d-m-Y',strtotime($report->report_dt)) }}</td>
                                         <td>{{$report->status}}
-                                                 @if($report->status == 'GENERATED' || $report->status == 'UNDERPROCESS') 
+                                                 @if($report->status == 'Generated') 
                                                  <button type="button" class="btn btn-warning pending" title={{ __("Action pending") }} data-toggle="modal" data-target="#exampleModal" id="{{$report->id}}" >
                                                  <i class="fa fa-exclamation-triangle" ></i>
                                                  </button>
