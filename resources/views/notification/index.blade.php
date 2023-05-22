@@ -4,6 +4,10 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
+
+       
+
+
                 <div class="col-md-12">
                     <div class="card">
                     	<div class="card-header card-header-primary">
@@ -36,10 +40,17 @@
 													<a  href="/notifications/{{$notification->id}}/edit" rel="tooltip" title={{__("edit") }} class="btn btn-success btn-simple btn-xs"><i class="fa fa-edit"></i></a>	
                                                     <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$notification->id}}">
                                                     <i class="fa fa-times"></i></button>
-                                                    <button type="button"  rel="tooltip" title={{ __("save") }} class="btn btn-success btn-simple btn-xs save" id="{{$notification->id}}">
-                                                    Save</button>
-                                                    <button type="button"  rel="tooltip" title={{ __("send") }} class="btn btn-primary btn-simple btn-xs send" id="{{$notification->id}}">
-                                                    <i class="fa fa-send"></i></button>							
+                                                    <!-- 
+  <button type="button"  rel="tooltip" title={{ __("save") }} class="btn btn-success btn-simple btn-xs save" id="{{$notification->id}}">
+                                                  Save</button>   -->
+                                                    
+                                                    
+                                                   
+
+                                                    <button type="button" rel="tooltip" title="{{ __("send") }}" class="btn btn-primary btn-simple btn-xs send" data-description="{{ __("jamia.description") }}" id="{{$notification->id}}">
+    <i class="fa fa-send"></i>
+</button>
+                                                    
                                                 </td>
                                             </tr>
 										@endforeach
@@ -67,5 +78,41 @@
             window.location= url;
           }
       });
-    </script>
+
+    
+//Send Notification to Devices
+$(document).ready(function() {
+  $('.send').click(function() {
+   // var message = $(this).data('description');
+    //var title = 'deepak';
+    var id = $(this).attr("id"); 
+    // Call your PHP function with the 'description' value
+  // alert(id);
+
+   $.ajax({
+            url: '{{ route("send-push-notification") }}',
+            type: 'POST',
+            data: {
+                '_token': '{{ csrf_token() }}',
+               // 'message': message,
+               // 'title': title,
+                'id':id
+            },
+            success: function(response) {
+                console.log(response); // Handle the response from the server
+            },
+            error: function(xhr, status, error) {
+                console.log(error); // Handle the error
+            }
+        });
+
+
+  });
+});
+</script>
+
+
+
+
+
 @endsection

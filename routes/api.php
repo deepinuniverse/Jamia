@@ -144,3 +144,7 @@ Route::get('/productByItemBarCode/', 'App\Http\Controllers\APIController@getProd
 Route::post('/storeDeviceFCMToken/', 'App\Http\Controllers\APIController@storeDeviceFCMToken');
 
 
+Route::post('/SendPushNotification/', 'App\Http\Controllers\APIController@SendPushNotificationALL');
+
+
+

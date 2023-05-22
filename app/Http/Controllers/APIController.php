@@ -15,6 +15,7 @@ use DB;
 use App\Models\Complaint;
 use App\Models\Director;
 use App\Models\DiscardReport;
+use Illuminate\Support\Facades\Http;
 
 class APIController extends Controller
 {
@@ -418,6 +419,7 @@ class APIController extends Controller
                          ->where('branch_categories.id', $request['catid']) // Add where clause to filter by 'id' parameter
                          ->get();
  
+                       //  $locationUrl = $branches[0]->location;
  
                      if ($branches->isEmpty()) {
                          // If no records found, create a JSON response with appropriate error status, message, and response code
@@ -435,6 +437,7 @@ class APIController extends Controller
                      'code' => 200,
                      'status' => true,
                      'data' => $branches
+                    // 'locationUrl' => $locationUrl
                  ], 200);
              } catch (QueryException $e) {
                  // If a SQL exception occurs, create a JSON response with error status, error message, and response code
@@ -468,6 +471,10 @@ class APIController extends Controller
                         ->where('branches.id', $request['id']) // Add where clause to filter by 'id' parameter
                         ->get();
 
+                    
+                   
+                        
+
 
                     if ($branches->isEmpty()) {
                         // If no records found, create a JSON response with appropriate error status, message, and response code
@@ -485,6 +492,7 @@ class APIController extends Controller
                     'code' => 200,
                     'status' => true,
                     'data' => $branches
+                    //'locationUrl' => 'deepak'
                 ], 200);
             } catch (QueryException $e) {
                 // If a SQL exception occurs, create a JSON response with error status, error message, and response code
@@ -1624,7 +1632,6 @@ class APIController extends Controller
                        ->get();
 
 
-
                         
                 if ($productDet->isEmpty()) {
                     // No records found
@@ -1655,6 +1662,146 @@ class APIController extends Controller
                 ], 500);
             }
         } 
+
+
+    
+
+           
+
+            //working
+
+            public function SendPushNotificationSingle(Request $request)
+            {
+                
+                    // Get the FCM server key from the .env file.
+                 $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+                 $deviceToken = 'dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl';
+
+                            // Retrieve the device tokens from the database.
+               // $deviceTokens = DB::table('device_fcm_token')->pluck('device_fcm_token')->toArray();
+
+                // Create an array to store the responses for each device.
+               
+                $responses = [];
+                
+                                // Create the notification payload.
+                    $notificationPayload = [
+                        'to' => $deviceToken,
+                        'notification' => [
+                            'title' => $request->input('title'),
+                            'body' => $request->input('message'),
+                        ],
+                        'data' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                    ];
+
+                    // Send the notification to FCM.
+                    $response = Http::withHeaders([
+                        'Authorization' => 'key=' . $serverKey,
+                    ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
+
+                    // Check the response status code.
+                    if ($response->getStatusCode() !== 200) {
+                        throw new \Exception('An error occurred while sending the notification.');
+                    }
+
+                    $responseData = [
+                        'title' => $request->input('title'),
+                        'body' => $request->input('message'),
+                        'response' => $response->getBody(),
+                    ];
+
+                    $responses[] = $responseData;
+
+                    // Return the response body.
+                   return $response->getBody();
+                 // return $responses;
+                                            
+            }
+
+
+
+            public function SendPushNotificationAll(Request $request)
+            {
+                $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+               // $deviceTokens = ['dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl', 'another_device_token'];
+
+               $notificationId = $request['id'];
+
+              $notificationDesc = DB::table('notifications')
+              ->where('id', $notificationId)
+              ->value('notes');
+
+                $title = 'جمعية صباح الناصر التعاونية';
+                $message = $notificationDesc;
+
+
+                $deviceTokens = DB::table('device_fcm_token')                
+                ->pluck('device_fcm_token')
+                ->toArray();
+
+
+                $deviceTokens = DB::table('device_fcm_token')
+                ->select('device_fcm_token')
+                ->whereNotNull('device_fcm_token')
+                ->distinct()
+                ->pluck('device_fcm_token')
+                ->toArray();
+              
+                //return $deviceTokens;
+                
+
+                $responses = [];
+
+                
+                    // Create the notification payload.
+                    $notificationPayload = [
+                        'registration_ids' => $deviceTokens,
+                        'notification' => [
+                            'title' =>  $title,
+                            'body' => $message ,
+                        ],
+                        'data' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                    ];
+                        
+                    
+
+                    // Send the notification to FCM.
+                    $response = Http::withHeaders([
+                        'Authorization' => 'key=' . $serverKey,
+                    ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
+
+                    // Check the response status code.
+                    if ($response->getStatusCode() !== 200) {
+                        throw new \Exception('An error occurred while sending the notification.');
+                    }
+
+                    $responseData = [
+                        'title' => $request->input('title'),
+                        'body' => $request->input('message'),
+                        'response' => $response->getBody(),
+                    ];
+
+                    $responses[] = $responseData;
+                
+
+                // Return the responses array.
+                return $responses;
+            }
+
+
+
+
+            
+           
+    
 
 
 

@@ -142,3 +142,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controllers\LanguageController@switchLang']);
+
+
+Route::post('/send-push-notification', 'App\Http\Controllers\APIController@SendPushNotificationALL')->name('send-push-notification');
