@@ -1239,8 +1239,8 @@ class APIController extends Controller
 
 
                 $response = [
-                    'status' => true,
-                    'lastInsertedId' => $lastInsertedId,
+                    'status' => true
+                  //  'lastInsertedId' => $lastInsertedId,
                     //'$result' => $result 
 
                 ];
