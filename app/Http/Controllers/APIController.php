@@ -517,8 +517,11 @@ class APIController extends Controller
             try {
                 // Retrieve news from the 'news_details' table in descending order of creation date
                 $news = DB::table('news_details')
-                    ->orderBy('created_at', 'desc')                  
+                    ->orderBy('created_at', 'desc')  
+                    ->limit(5)                
                     ->get();
+
+                  
         
                 // Create a JSON response with success status, data, and response code
                 return response()->json([
@@ -677,9 +680,11 @@ class APIController extends Controller
         ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
        // ->select('offers.*', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
        // ->groupBy('offers.id')
-       ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+        ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+        //->orderBy('offers.id', 'desc')
         ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
-      
+        ->orderBy('offers.created_at', 'desc')
+        ->limit(5)
         ->get();
 
    /* $offersFestivals = $offersFestivals->map(function ($offersFestivals) {
@@ -899,7 +904,8 @@ class APIController extends Controller
             try {
                 // Retrieve offers from the 'news_details' table in descending order of creation date
                 $offer_categories = DB::table('offer_categories')
-                    ->orderBy('created_at', 'desc')                  
+                    ->orderBy('created_at', 'desc') 
+                    ->limit(5)                   
                     ->get();
 
                     if ($offer_categories->isEmpty()) {
@@ -940,7 +946,9 @@ class APIController extends Controller
 
                 $couponOffers = DB::table('coupon_offers')
                 ->join('offer_categories', 'coupon_offers.offer_categories_id', '=', 'offer_categories.id')
-                ->select('coupon_offers.*', 'offer_categories.name as offer_category_name')               
+                ->select('coupon_offers.*', 'offer_categories.name as offer_category_name') 
+                ->orderBy('coupon_offers.created_at', 'desc')
+                ->limit(5)              
                 ->get();
 
                 if ($couponOffers->isEmpty()) {
@@ -1067,7 +1075,8 @@ class APIController extends Controller
                 // Retrieve branches from the 'branches' table in descending order of creation date               
 
                 $gallaryCat = DB::table('galleries')
-                ->orderBy('created_at', 'desc')                  
+                ->orderBy('created_at', 'desc') 
+                ->limit(5)                 
                 ->get();
 
 
@@ -1215,9 +1224,85 @@ class APIController extends Controller
                 $complaint->email = $request['email'];
                 $complaint->reason = $request['reason'];
                 $complaint->notes = $request['details'];
+                $complaint->device_fcm_token = $request['device_fcm_token'];
                 $complaint->save();
+
+
+                $lastInsertedId = $complaint->id; // Retrieve the last inserted record ID
+
+                
+
+                //TEST DEEP CALL FOR Notification
+
+
+                $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+             
+               $complaintid = $lastInsertedId;//$request['id'];
+
+          
+              $complaintinfo = DB::table('complaints')
+            ->select('reason', 'notes','device_fcm_token')
+            ->where('id', $complaintid)
+             ->first();
+
+             
+
+             $reason = $complaintinfo->reason;
+
+             $reason = "We have received your complaint : "  . $reason;
+             $notes = $complaintinfo->notes;           
+             $deviceToken = $complaintinfo->device_fcm_token;
+
+                $title = 'جمعية صباح الناصر التعاونية';
+           
+                
+
+                $responses = [];
+
+                
+                    // Create the notification payload.
+                    $notificationPayload = [
+                        'to' => $deviceToken,
+                        'notification' => [
+                            'title' =>  $title,
+                            //'body' => $reason ,
+                            'body' => $reason . "\n" . $notes,
+                        ],
+                        'data' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                           // 'reason' => $reason,
+                          //  'notes' => $notes,
+                        ],
+                    ];
+                        
+                    
+
+                    // Send the notification to FCM.
+                    $response = Http::withHeaders([
+                        'Authorization' => 'key=' . $serverKey,
+                    ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
+
+                    // Check the response status code.
+                    if ($response->getStatusCode() !== 200) {
+                        throw new \Exception('An error occurred while sending the notification.');
+                    }
+
+
+
+                //TEST DEEP END
+
+
+
+
+
+
                 $response = [
                     'status' => true,
+                    'lastInsertedId' => $lastInsertedId,
+                    //'$result' => $result 
+
                 ];
                 return response()->json($response, 200);
             } catch (\Exception $e) {
@@ -1249,7 +1334,79 @@ class APIController extends Controller
                 $discard->report_dt = $request['date'];
                 $discard->admin_note = $request['ad_not'];
                 $discard->status = $request['status'];
-                $discard->save();              
+                $discard->device_fcm_token = $request['device_fcm_token'];
+
+                $discard->save();   
+
+                $lastInsertedId = $discard->id; 
+                
+                
+
+                   //TEST DEEP CALL FOR Notification
+
+
+                   $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+             
+                   $discardid = $lastInsertedId;//$request['id'];
+    
+              
+                  $disardInfo = DB::table('discard_reports')
+                ->select('item_name', 'customer_note','device_fcm_token')
+                ->where('id', $discardid)
+                 ->first();
+    
+                 
+    
+                 $itemname = $disardInfo->item_name;
+    
+                 $itemname = "We have received your Discard Report :  "  . $itemname;
+                 $custnotes = $disardInfo->customer_note;           
+                 $deviceToken = $disardInfo->device_fcm_token;
+    
+                    $title = 'جمعية صباح الناصر التعاونية';
+               
+                    
+    
+                    $responses = [];
+    
+                    
+                        // Create the notification payload.
+                        $notificationPayload = [
+                            'to' => $deviceToken,
+                            'notification' => [
+                                'title' =>  $title,
+                                //'body' => $reason ,
+                                'body' => $itemname . "\n" . $custnotes,
+                            ],
+                            'data' => [
+                                'key1' => 'value1',
+                                'key2' => 'value2',
+                               // 'reason' => $reason,
+                              //  'notes' => $notes,
+                            ],
+                        ];
+                            
+                        
+    
+                        // Send the notification to FCM.
+                        $response = Http::withHeaders([
+                            'Authorization' => 'key=' . $serverKey,
+                        ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
+    
+                        // Check the response status code.
+                        if ($response->getStatusCode() !== 200) {
+                            throw new \Exception('An error occurred while sending the notification.');
+                        }
+    
+    
+    
+                    //TEST DEEP END
+
+
+
+
+
                 $response = [
                     'status' => true,
                 ];
@@ -1271,6 +1428,8 @@ class APIController extends Controller
                 // Retrieve branches from the 'branches' table in descending order of creation date               
 
                     $slideshows = DB::table('slideshows')
+                    ->orderBy('created_at', 'desc')  
+                    ->limit(5)   
                     ->get();
         
                 // Create a JSON response with success status, data, and response code
@@ -1763,11 +1922,86 @@ class APIController extends Controller
                         'registration_ids' => $deviceTokens,
                         'notification' => [
                             'title' =>  $title,
-                            'body' => $message ,
+                            //'body' => $message ,
+                           // 'body' => $message . "\n" . 'deepak',
                         ],
                         'data' => [
                             'key1' => 'value1',
                             'key2' => 'value2',
+                            //'notes' =>  ,
+                        ],
+                    ];
+                        
+                    
+
+                    // Send the notification to FCM.
+                    $response = Http::withHeaders([
+                        'Authorization' => 'key=' . $serverKey,
+                    ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
+
+                    // Check the response status code.
+                    if ($response->getStatusCode() !== 200) {
+                        throw new \Exception('An error occurred while sending the notification.');
+                    }
+
+                    $responseData = [
+                        'title' => $request->input('title'),
+                        'body' => $request->input('message'),
+                        'response' => $response->getBody(),
+                    ];
+
+                    $responses[] = $responseData;
+                
+
+                // Return the responses array.
+                return $responses;
+            }
+
+
+            
+
+            //For Test
+            public function SendPushNotificationComplaint(Request $request)
+            {
+                $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+             
+               $complaintid = $request['id'];
+
+          
+              $complaintinfo = DB::table('complaints')
+            ->select('reason', 'notes','device_fcm_token')
+            ->where('id', $complaintid)
+             ->first();
+
+             
+
+             $reason = $complaintinfo->reason;
+
+             $reason = "We have received your complaint "  . $reason;
+             $notes = $complaintinfo->notes;           
+             $deviceToken = $complaintinfo->device_fcm_token;
+
+                $title = 'جمعية صباح الناصر التعاونية';
+           
+                
+
+                $responses = [];
+
+                
+                    // Create the notification payload.
+                    $notificationPayload = [
+                        'to' => $deviceToken,
+                        'notification' => [
+                            'title' =>  $title,
+                            //'body' => $reason ,
+                            'body' => $reason . "\n" . $notes,
+                        ],
+                        'data' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                           // 'reason' => $reason,
+                          //  'notes' => $notes,
                         ],
                     ];
                         
@@ -1799,6 +2033,7 @@ class APIController extends Controller
 
 
 
+
             
            
     
@@ -1807,4 +2042,4 @@ class APIController extends Controller
 
 
 
-}
+} // end of Main Class

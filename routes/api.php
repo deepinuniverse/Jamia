@@ -146,5 +146,7 @@ Route::post('/storeDeviceFCMToken/', 'App\Http\Controllers\APIController@storeDe
 
 Route::post('/SendPushNotification/', 'App\Http\Controllers\APIController@SendPushNotificationALL');
 
+Route::post('/SendPushNotificationComplaint/', 'App\Http\Controllers\APIController@SendPushNotificationComplaint');
+
 
 
