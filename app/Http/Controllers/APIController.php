@@ -1232,67 +1232,7 @@ class APIController extends Controller
 
                 
 
-                //TEST DEEP CALL FOR Notification
-
-
-                $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
-
-             
-               $complaintid = $lastInsertedId;//$request['id'];
-
-          
-              $complaintinfo = DB::table('complaints')
-            ->select('reason', 'notes','device_fcm_token')
-            ->where('id', $complaintid)
-             ->first();
-
-             
-
-             $reason = $complaintinfo->reason;
-
-             $reason = "We have received your complaint : "  . $reason;
-             $notes = $complaintinfo->notes;           
-             $deviceToken = $complaintinfo->device_fcm_token;
-
-                $title = 'جمعية صباح الناصر التعاونية';
-           
-                
-
-                $responses = [];
-
-                
-                    // Create the notification payload.
-                    $notificationPayload = [
-                        'to' => $deviceToken,
-                        'notification' => [
-                            'title' =>  $title,
-                            //'body' => $reason ,
-                            'body' => $reason . "\n" . $notes,
-                        ],
-                        'data' => [
-                            'key1' => 'value1',
-                            'key2' => 'value2',
-                           // 'reason' => $reason,
-                          //  'notes' => $notes,
-                        ],
-                    ];
-                        
-                    
-
-                    // Send the notification to FCM.
-                    $response = Http::withHeaders([
-                        'Authorization' => 'key=' . $serverKey,
-                    ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);
-
-                    // Check the response status code.
-                    if ($response->getStatusCode() !== 200) {
-                        throw new \Exception('An error occurred while sending the notification.');
-                    }
-
-
-
-                //TEST DEEP END
-
+              
 
 
 
@@ -1958,7 +1898,7 @@ class APIController extends Controller
             }
 
 
-            
+
 
             //For Test
             public function SendPushNotificationComplaint(Request $request)
