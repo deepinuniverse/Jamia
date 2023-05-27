@@ -11,11 +11,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\QueryException;
-use DB;
+//use DB;
 use App\Models\Complaint;
 use App\Models\Director;
 use App\Models\DiscardReport;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\DB;
 
 class APIController extends Controller
 {
@@ -1230,12 +1231,36 @@ class APIController extends Controller
 
                 $lastInsertedId = $complaint->id; // Retrieve the last inserted record ID
 
-                
+               
+                //Insert to fcm_message table 
+
+               
+                $title = 'جمعية صباح الناصر التعاونية';
+                $notificationType = 'Complaint';
 
                   //TEST DEEP CALL FOR Notification
 
 
-                  $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+                $device_fcm_token = $request->input('device_fcm_token');
+                $title = $title;
+                $notificationType = $notificationType; 
+                $reason = $request->input('reason');
+                $description = $request->input('details');
+                 // $admin_explanation = $request->input('admin_explanation');
+                 
+                 DB::table('fcm_messages')->insert([
+                    'device_fcm_token' => $device_fcm_token,
+                    'title' => $title,
+                    'notificationType' => $notificationType,
+                    'reason' => $reason,
+                    'description' => $description,
+                  
+                ]);
+
+
+
+
+                 $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
 
              
                   $complaintid = $lastInsertedId;//$request['id'];
@@ -1342,10 +1367,38 @@ class APIController extends Controller
                 
                 
 
-                   //TEST DEEP CALL FOR Notification
 
 
-                   $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+                
+                $title = 'جمعية صباح الناصر التعاونية';
+                $notificationType = 'Disard Report';
+
+                  //TEST DEEP CALL FOR Notification
+
+
+                $device_fcm_token = $request->input('device_fcm_token');
+                $title = $title;
+                $notificationType = $notificationType; 
+                $reason = $request->input('item');
+                $description = $request->input('cust_not');
+                 // $admin_explanation = $request->input('admin_explanation');
+                 
+                 DB::table('fcm_messages')->insert([
+                    'device_fcm_token' => $device_fcm_token,
+                    'title' => $title,
+                    'notificationType' => $notificationType,
+                    'reason' => $reason,
+                    'description' => $description,
+                  
+                ]);
+
+
+
+                 //TEST DEEP CALL FOR Notification
+
+
+                  $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
 
              
                    $discardid = $lastInsertedId;//$request['id'];
@@ -1781,14 +1834,14 @@ class APIController extends Controller
         {
             try {
                
-                    $ItemBarcode = $request['ItemBarcode']; // Retrieve 'id' parameter from the request
+                $ItemBarcode = $request['ItemBarcode']; // Retrieve 'id' parameter from the request
                    
                 
                  
-                    $productDet = DB::table('jamaiya_products')
-                    ->select('id', 'ItemBarcode','ItemCode','ItemName','ItemPrice','vendor')
-                        ->where('ItemBarcode', $ItemBarcode)  
-                       ->get();
+                $productDet = DB::table('jamaiya_products')
+                ->select('id', 'ItemBarcode','ItemCode','ItemName','ItemPrice','vendor')
+                ->where('ItemBarcode', $ItemBarcode)  
+                ->get();
 
 
                         
@@ -1898,10 +1951,9 @@ class APIController extends Controller
                 $title = 'جمعية صباح الناصر التعاونية';
                 $message = $notificationDesc;
 
+                $notificationType = "General";
 
-                $deviceTokens = DB::table('device_fcm_token')                
-                ->pluck('device_fcm_token')
-                ->toArray();
+             
 
 
                 $deviceTokens = DB::table('device_fcm_token')
@@ -1912,6 +1964,20 @@ class APIController extends Controller
                 ->toArray();
               
                 //return $deviceTokens;
+
+
+                $values = [];
+
+                foreach ($deviceTokens as $token) {
+                    $values[] = [
+                        'device_fcm_token' => $token,
+                        'title' => $title,
+                        'notificationType' => $notificationType,                        
+                        'description' => $notificationDesc                      
+                    ];
+                }
+
+                DB::table('fcm_messages')->insert($values);
                 
 
                 $responses = [];
@@ -1922,7 +1988,7 @@ class APIController extends Controller
                         'registration_ids' => $deviceTokens,
                         'notification' => [
                             'title' =>  $title,
-                            //'body' => $message ,
+                            'body' => $message ,
                            // 'body' => $message . "\n" . 'deepak',
                         ],
                         'data' => [
@@ -2029,6 +2095,53 @@ class APIController extends Controller
                 // Return the responses array.
                 return $responses;
             }
+
+
+            public function getFCMMessages(Request $request)
+            {
+                try {
+                   
+                    $device_fcm_token = $request['device_fcm_token']; // Retrieve 'id' parameter from the request
+                       
+                    
+                     
+                    $fcmmessage = DB::table('fcm_messages')
+                    ->select('id', 'device_fcm_token','title','notificationType','reason','description','admin_explanation')
+                    ->where('device_fcm_token', $device_fcm_token)  
+                    ->orderByDesc('created_at')
+                    ->get();
+    
+    
+                            
+                    if ($fcmmessage->isEmpty()) {
+                        // No records found
+                        //return response()->json(['error' => 'CIVIL ID and Box number are not correct'], 404);
+    
+                        return response()->json(['message' => null]);
+                    }
+           
+    
+                    return response()->json([
+                        'code' => 200,
+                        'status' => true,
+                        'data' => $fcmmessage
+                    ], 200);
+                } catch (QueryException $e) {
+                    // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'Failed to retrieve fcmmessage   from the database: ' . $e->getMessage()
+                    ], 500);
+                } catch (\Exception $e) {
+                    // If any other exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'An error occurred: ' . $e->getMessage()
+                    ], 500);
+                }
+            } 
 
 
 

@@ -148,5 +148,5 @@ Route::post('/SendPushNotification/', 'App\Http\Controllers\APIController@SendPu
 
 Route::post('/SendPushNotificationComplaint/', 'App\Http\Controllers\APIController@SendPushNotificationComplaint');
 
-
+Route::get('/FcmMessages/', 'App\Http\Controllers\APIController@getFCMMessages');
 
