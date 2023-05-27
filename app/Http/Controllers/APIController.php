@@ -2106,9 +2106,9 @@ class APIController extends Controller
                     
                      
                     $fcmmessage = DB::table('fcm_messages')
-                    ->select('id', 'device_fcm_token','title','notificationType','reason','description','admin_explanation')
+                    ->select('id', 'device_fcm_token','title','notificationType','reason','description','admin_explanation','created_at')
                     ->where('device_fcm_token', $device_fcm_token)  
-                    ->orderByDesc('created_at')
+                    ->orderByDesc('id')
                     ->get();
     
     
