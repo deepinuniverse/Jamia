@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Complaint;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ComplaintController extends Controller
 {
@@ -16,7 +18,7 @@ class ComplaintController extends Controller
     {
         //
         try {
-            $complaints = Complaint::orderBy('name')->get();
+            $complaints = Complaint::orderBy('id','desc')->get();
             return view('complaint.index',['complaints'=>$complaints]);
         } catch (\Exception $e) {
             return $e->getMessage();
@@ -142,6 +144,121 @@ class ComplaintController extends Controller
          $complaint->reason = $request->get('status');
          $complaint->admin_note = $request->get('note');
          $complaint->save();
+
+
+
+        //Temp Deep 
+
+
+
+        $title = 'جمعية صباح الناصر التعاونية';
+        $notificationType = 'Complaint';
+
+        $ComplaintId = $request->get('id');
+
+      //  echo "<script>console.log('Discard ID:', $discardId);</script>";
+
+       // echo "<span>Discard ID: $discardId</span>";
+
+       // $discardId = 39;
+       // $discardId = $request->get('id');
+        //$discard = DiscardReport::find($discardId);
+
+
+        $ComplaintId = $request->get('id');
+        $ComplaintData = Complaint::find($ComplaintId);
+
+        $reason = $ComplaintData->reason;
+        $notes = $ComplaintData->notes;
+        $admin_note = $ComplaintData->admin_note;
+        $device_fcm_token = $ComplaintData->device_fcm_token;
+
+
+    
+        if (empty($ComplaintData)) {
+            // The $discardReportData is empty
+            echo "No discard report found";
+
+        } else {
+          
+          
+            DB::table('fcm_messages')->insert([
+                'device_fcm_token' =>  $device_fcm_token,
+                'title' =>  $title,
+                'notificationType' => $notificationType,
+                'reason' => $reason,
+                'description' =>  $notes,
+                'admin_explanation' => $admin_note 
+            ]);
+
+
+          /*  $insertedId = DB::table('fcm_messages')->insertGetId([
+                'device_fcm_token' =>  $device_fcm_token,
+                'title' =>  $title,
+                'notificationType' => 'Complaint',
+                'reason' => $item_name,
+                'description' =>  $customer_note,
+                'admin_explanation' => $admin_note 
+            ]); */
+
+            $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
+
+          //  $device_fcm_token = 'dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl';
+
+            $notificationPayload = [
+                'to' => $device_fcm_token,
+                'notification' => [
+                    'title' =>  $title,
+                    //'body' => $reason ,
+                    'body' =>$reason . "\n" . $notes . "\n" . $admin_note,
+                    //'body' =>'deee',
+                ],
+                'data' => [
+                    'key1' => 'value1',
+                    'key2' => 'value2',
+                   // 'reason' => $reason,
+                  //  'notes' => $notes,
+                ],
+            ];
+                
+            
+
+            // Send the notification to FCM.
+            $response = Http::withHeaders([
+                'Authorization' => 'key=' . $serverKey,
+            ])->post('https://fcm.googleapis.com/fcm/send', $notificationPayload);               
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
          return 0;
+
+
+
+
+
+
+      
     }
 }

@@ -1275,7 +1275,7 @@ class APIController extends Controller
    
                 $reason = $complaintinfo->reason;
    
-                $reason = "We have received your complaint : "  . $reason;
+                $reason = "تم استلام طلب  تواصل معنا  بنجاح ! : "  . $reason;
                 $notes = $complaintinfo->notes;           
                 $deviceToken = $complaintinfo->device_fcm_token;
    
@@ -1413,7 +1413,7 @@ class APIController extends Controller
     
                  $itemname = $disardInfo->item_name;
     
-                 $itemname = "We have received your Discard Report :  "  . $itemname;
+                 $itemname = "تم استلام طلب  إبلاغ عن سلعه  بنجاح ! :  "  . $itemname;
                  $custnotes = $disardInfo->customer_note;           
                  $deviceToken = $disardInfo->device_fcm_token;
     
@@ -1888,7 +1888,12 @@ class APIController extends Controller
                     // Get the FCM server key from the .env file.
                  $serverKey = 'AAAAFtZOxqk:APA91bGElbCGY0gqC7ayPq7evrctaw754RSPZzs5nZbYjfay-TGDLPL0xeE7DnV17K5cQDrADp5__YrApHf7KJeUDQl13DwPtqp75SkyaedSgG0f48sysGR1-B7ya3mfT1eNK7wg-Ha8'; // Replace with your FCM server key
 
+                 // Ios Token
                  $deviceToken = 'dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl';
+
+                  // Android Token
+                  $deviceToken = 'fnDPddOzQDOeePx6XmqHEc:APA91bH5a5ELIYpJYoRmSWa4Ga7qbk8JXjq-6-t9dfbE495IwqdQiIeR_1z9PILn1qoeg4mYV95YpAcS0qpxu0_LrVVP8lfqKYAl-1l9imba51MM6h0x91i7_akSkP1a3ASm8_3Ngh6j';
+
 
                             // Retrieve the device tokens from the database.
                // $deviceTokens = DB::table('device_fcm_token')->pluck('device_fcm_token')->toArray();

@@ -7,6 +7,12 @@
         </button>
       </div>
       <div class="modal-body">
+      @if (session('alert'))
+    <div class="alert alert-info">
+        {{ session('alert') }}
+    </div>
+@endif
+
         <table class="table">
           <input type="hidden" name="discard_id" id="discard_id" value="{{$discard->id}}">
           @if(empty($discard->item_photo))
@@ -20,7 +26,7 @@
           <tr><td>{{ __("jamia.admin_exp")}}: <textarea class="form-control" id="admin_not" name="admin_not" ></textarea></td></tr>
         </table>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer">      
         <button type="button" class="btn btn-success admin_reply" id="DONE">{{ __("jamia.aprove")}}</button>
       </div>
     </div>
