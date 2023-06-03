@@ -2209,7 +2209,7 @@ class APIController extends Controller
                     ]);
             
                     // Check if the user exists in the database
-                    $user = DB::table('appUsers')
+                    $user = DB::table('appusers')
                         ->where('civilid', $validatedData['civilid'])
                         ->where('password', $validatedData['password'])
                         ->first();
