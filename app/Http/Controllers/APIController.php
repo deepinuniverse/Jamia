@@ -17,6 +17,8 @@ use App\Models\Director;
 use App\Models\DiscardReport;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class APIController extends Controller
 {
@@ -1718,20 +1720,29 @@ class APIController extends Controller
         public function storeDeviceFCMToken(Request $request)
         {
             try {
-
                 $device_fcm_token = $request->input('device_fcm_token');
-                
-                // Insert data into the 'device_fcm_token' table
-                DB::table('device_fcm_token')->insert([
-                    'device_fcm_token' => $device_fcm_token
-                ]);
-
+            
+                // Check if the device_fcm_token already exists
+                $existingRecord = DB::table('device_fcm_token')
+                    ->where('device_fcm_token', $device_fcm_token)
+                    ->first();
+            
+                if (!$existingRecord) {
+                    // Insert data into the 'device_fcm_token' table
+                    DB::table('device_fcm_token')->insert([
+                        'device_fcm_token' => $device_fcm_token
+                    ]);
+                }
+            
+                // The insertion will be skipped if the device_fcm_token already exists in the table.
+            
                 // Return a success response
-                return response()->json(['message' => 'Data stored successfully'], 200);
+                return response()->json(['message' => 'Device FCM token saved successfully']);
             } catch (\Exception $e) {
-                // Handle the exception and return an error response
-                return response()->json(['message' => 'Failed to store data'], 500);
+                // Return an error response
+                return response()->json(['message' => 'Error occurred while saving device FCM token', 'error' => $e->getMessage()], 500);
             }
+            
         }
 
 
@@ -2150,7 +2161,184 @@ class APIController extends Controller
 
 
 
+            public function MobileUserSignup(Request $request)
+            {
+                try {
+                    // Validate the request data
+                    $validatedData = $request->validate([
+                        'name' => 'required',
+                        'phone' => 'required',
+                        'email' => 'required|email',
+                        'password' => 'required',
+                        'civilid' => 'required',
+                        'box_no' => 'required',
+                    ]);
 
+
+                    $existingUser = DB::table('appusers')
+                    ->where('civilid', $validatedData['civilid'])
+                    ->first();
+        
+                    if ($existingUser) {
+                        return response()->json(['message' => 'Civil ID already registered'], 409);
+                    }
+        
+                    // Create a new user
+                    $userId = DB::table('appusers')->insertGetId($validatedData);
+                    
+                    // Retrieve the created user
+                    $user = DB::table('appusers')->find($userId);
+        
+                    // Return a success response
+                    return response()->json(['message' => 'Signup successful', 'user' => $user]);
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while signing up', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+            public function MobileUserSignIn(Request $request)
+            {
+
+
+                try {
+                    // Validate the request data
+                    $validatedData = $request->validate([
+                        'civilid' => 'required',
+                        'password' => 'required',
+                    ]);
+            
+                    // Check if the user exists in the database
+                    $user = DB::table('appUsers')
+                        ->where('civilid', $validatedData['civilid'])
+                        ->where('password', $validatedData['password'])
+                        ->first();
+            
+                    // If the user is not found or the password is incorrect, return an error response
+                    if (!$user) {
+                        return response()->json(['message' => 'Invalid credentials'], 401);
+                    }
+            
+                    // Return a success response
+                    return response()->json(['message' => 'Signin successful', 'user' => $user]);
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while signing in', 'error' => $e->getMessage()], 500);
+                }
+
+                
+            }
+
+
+
+            public function sendMobileUserPassword(Request $request)
+            {
+                try {
+                    // Validate the request data
+                    $validatedData = $request->validate([
+                        'email' => 'required|email',
+                    ]);
+            
+                    // Find the user in the database
+                    $user = DB::table('appUsers')
+                        ->where('email', $validatedData['email'])
+                        ->first();
+            
+                    // If the user is found, send the password to their email
+                    if ($user) {
+                        // Send the password to the user's email
+                        Mail::raw("Your password: $user->password", function ($message) use ($validatedData) {
+                            $message->to($validatedData['email'])
+                                ->subject('Your Password');
+                        });
+            
+                        // Return a success response
+                        return response()->json(['message' => 'Password sent to user email']);
+                    } else {
+                        // If the user is not found, return an error response
+                        return response()->json(['message' => 'User not found'], 404);
+                    }
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending password', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+
+
+            public function GetHomeScreenData()
+            {
+                try {
+                    // Retrieve news from the 'news_details' table in descending order of creation date
+                    $news = DB::table('news_details')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5)
+                        ->get();
+
+                    // Retrieve slideshows from the 'slideshows' table in descending order of creation date
+                    $slideshows = DB::table('slideshows')
+                        ->orderBy('created_at', 'desc')
+                        ->limit(5)
+                        ->get();
+
+                
+                    
+                  // Retrieve news from the 'offersFestivals' table 
+
+                        $offersFestivals = DB::table('offers')
+                        ->leftJoin('offers_images', 'offers.id', '=', 'offers_images.offers_id')
+                  
+                        ->select('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo', DB::raw('GROUP_CONCAT(offers_images.image) as images'))
+                      
+                        ->groupBy('offers.id', 'offers.topic', 'offers.location', 'offers.details', 'offers.from_dt', 'offers.to_dt', 'offers.photo')
+                        ->orderBy('offers.created_at', 'desc')
+                        ->limit(5)
+                        ->get();
+
+                        $offersFestivals = $offersFestivals->map(function ($offersFestival) {
+                            $offersFestival->images = explode(',', $offersFestival->images);
+                            return $offersFestival;
+                        });
+
+
+                        // Retrieve news from the 'branchesCat' table 
+                        $branchesCat = DB::table('branch_categories')
+                        ->get();
+
+
+                         // Retrieve news from the 'offer_categories' table 
+                    $offer_categories = DB::table('offer_categories')
+                    ->orderBy('created_at', 'desc') 
+                    ->limit(5)                   
+                    ->get();
+                    
+
+                    // Create a JSON response with success status, data, and response code
+                    return response()->json([
+                        'code' => 200,
+                        'status' => true,
+                        'news' => $news,
+                        'slideshows' => $slideshows,
+                        'offersFestivals' => $offersFestivals,
+                        'branchesCat' => $branchesCat,
+                        'offer_categories' => $offer_categories,
+                    ], 200);
+                } catch (QueryException $e) {
+                    // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'Failed to retrieve data from the database: ' . $e->getMessage()
+                    ], 500);
+                } catch (\Exception $e) {
+                    // If any other exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'An error occurred: ' . $e->getMessage()
+                    ], 500);
+                }
+            }
 
             
            

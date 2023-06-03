@@ -145,3 +145,5 @@ Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controller
 
 
 Route::post('/send-push-notification', 'App\Http\Controllers\APIController@SendPushNotificationALL')->name('send-push-notification');
+
+

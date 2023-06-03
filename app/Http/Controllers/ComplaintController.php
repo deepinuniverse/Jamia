@@ -205,13 +205,15 @@ class ComplaintController extends Controller
 
           //  $device_fcm_token = 'dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl';
 
+         // $msg = 'شكرا على تواصلكم ، تم عمل الإجراء اللازم ';
+           //$body = $msg . ' : ' . $reason . "\n" . $notes . "\n" . $admin_note;
             $notificationPayload = [
                 'to' => $device_fcm_token,
                 'notification' => [
                     'title' =>  $title,
                     //'body' => $reason ,
-                    'body' =>$reason . "\n" . $notes . "\n" . $admin_note,
-                    //'body' =>'deee',
+                    'body' =>  $reason . "\n" . $notes . "\n" . $admin_note,
+                   // 'body' => $body,
                 ],
                 'data' => [
                     'key1' => 'value1',
@@ -230,23 +232,6 @@ class ComplaintController extends Controller
 
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

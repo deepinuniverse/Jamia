@@ -148,8 +148,19 @@ Route::post('/SendPushNotification/', 'App\Http\Controllers\APIController@SendPu
 
 Route::post('/SendPushNotificationComplaint/', 'App\Http\Controllers\APIController@SendPushNotificationComplaint');
 
-Route::get('/FcmMessages/', 'App\Http\Controllers\APIController@getFCMMessages');
+Route::post('/FcmMessages/', 'App\Http\Controllers\APIController@getFCMMessages');
 
 
 Route::post('/SendPushNotificationSingle/', 'App\Http\Controllers\APIController@SendPushNotificationSingle');
+
+
+Route::post('/MobileUserSignup/', 'App\Http\Controllers\APIController@MobileUserSignup');
+
+
+Route::post('/MobileUserSignIn/', 'App\Http\Controllers\APIController@MobileUserSignIn');
+
+Route::post('/sendMobileUserPassword/', 'App\Http\Controllers\APIController@sendMobileUserPassword');
+
+
+Route::get('/GetHomeScreenData/', 'App\Http\Controllers\APIController@GetHomeScreenData');
 

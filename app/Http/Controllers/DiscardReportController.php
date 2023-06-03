@@ -241,6 +241,8 @@ class DiscardReportController extends Controller
 
               //  $device_fcm_token = 'dPW1numVB0HpohbGEjpmiS:APA91bEJhyoK6o1-Q-K1TopMO3sfNINHHpGzRugjws9dwgfyMVmsBM7dF5pRNCQFh_8XYPPFDPr0O8LM9C2tBsM4PQJdoGcSKpBrMMiPu3ExnxkcbDCTDZmOEpJv28LnHuBmUfD8YOnl';
 
+             // $msg = 'شكرا على تواصلكم ، تم عمل الإجراء اللازم ';
+              //$body = $msg . ' : ' . $item_name . "\n" . $customer_note . "\n" . $admin_note;
                 $notificationPayload = [
                     'to' => $device_fcm_token,
                     'notification' => [

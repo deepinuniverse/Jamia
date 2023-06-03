@@ -39,7 +39,7 @@ class AppServiceProvider extends ServiceProvider
         view()->composer('dashboard', function ($view) {
             $view->with('discardCount',
                 DiscardReport::whereIn('status', ['GENERATED','UNDERPROCESS'])->count());
-            $view->with('complaintCount',Complaint::whereIn('reason', ['GENERATED','UNDERPROCESS'])->count());
+            $view->with('complaintCount',Complaint::whereIn('reason', ['شكوي','استفسار','اقتراح','سبب اخر'])->count());
             $view->with('notification',Notification::where('created_dt','=',date('Y-m-d'))->count());
             $view->with('offers',Offer::where('from_dt','>=',date('Y-m-d'))
                                       ->where('to_dt','<=',date('Y-m-d'))->count());
