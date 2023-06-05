@@ -2270,10 +2270,10 @@ class APIController extends Controller
             {
                 try {
                     // Retrieve news from the 'news_details' table in descending order of creation date
-                    $news = DB::table('news_details')
-                        ->orderBy('created_at', 'desc')
-                        ->limit(5)
-                        ->get();
+                  //  $news = DB::table('news_details')
+                   //     ->orderBy('created_at', 'desc')
+                  //      ->limit(5)
+                  //      ->get();
 
                     // Retrieve slideshows from the 'slideshows' table in descending order of creation date
                     $slideshows = DB::table('slideshows')
@@ -2301,27 +2301,36 @@ class APIController extends Controller
                         });
 
 
+                     $socialmedia = DB::table('socialmedia')
+                    ->get();
+
+                    //Shareholder  title
+                    $sharholderTitle = DB::table('customer_profit')
+                    ->orderBy('id', 'desc')
+                    ->first();
+
+
                         // Retrieve news from the 'branchesCat' table 
-                        $branchesCat = DB::table('branch_categories')
-                        ->get();
+                     //   $branchesCat = DB::table('branch_categories')
+                    //    ->get();
 
 
                          // Retrieve news from the 'offer_categories' table 
-                    $offer_categories = DB::table('offer_categories')
-                    ->orderBy('created_at', 'desc') 
-                    ->limit(5)                   
-                    ->get();
+                   // $offer_categories = DB::table('offer_categories')
+                  //  ->orderBy('created_at', 'desc') 
+                 //   ->limit(5)                   
+                  //  ->get();
                     
 
                     // Create a JSON response with success status, data, and response code
                     return response()->json([
                         'code' => 200,
                         'status' => true,
-                        'news' => $news,
+                       // 'news' => $news,
                         'slideshows' => $slideshows,
                         'offersFestivals' => $offersFestivals,
-                        'branchesCat' => $branchesCat,
-                        'offer_categories' => $offer_categories,
+                        'socialmedia' => $socialmedia,
+                        'sharholderTitle' => $sharholderTitle,
                     ], 200);
                 } catch (QueryException $e) {
                     // If a database query exception occurs, create a JSON response with error status, error message, and response code
