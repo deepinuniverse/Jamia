@@ -2218,9 +2218,26 @@ class APIController extends Controller
                     if (!$user) {
                         return response()->json(['message' => 'Invalid credentials'], 401);
                     }
+
+
+
+                    $ShareHolderProfit = DB::table('shareholdersnfamilydata')
+                    ->select('SHR_NO as Box_No','NAME','CIVIL_ID','CODE as ShareHolderBarCode','PROFIT')
+                        ->where('CIVIL_ID', $validatedData['civilid'])                        
+                       // ->Where('SHR_NO', $box_no)                    
+                        ->get();
+
+                    
+                        if ($ShareHolderProfit->isEmpty()) {
+                            // Return an empty message
+                            return response()->json(['message' => 'No shareholder family card data found.']);
+                        }
+
+
+
             
                     // Return a success response
-                    return response()->json(['message' => 'Signin successful', 'user' => $user]);
+                    return response()->json(['message' =>  $ShareHolderProfit]);
                 } catch (\Exception $e) {
                     // Return an error response
                     return response()->json(['message' => 'Error occurred while signing in', 'error' => $e->getMessage()], 500);
