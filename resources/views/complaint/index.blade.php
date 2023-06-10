@@ -25,6 +25,7 @@
                                         <th>{{__("jamia.cust_phone")}}</th>
                                         <th>{{__("jamia.email")}}</th>
                                         <th>{{__("jamia.reason")}}</th>
+                                        <th>{{__("jamia.Complaint_date")}}</th>
                                         <th>{{__("jamia.action") }}</th>
                                                </thead>
                                     <tbody><?php $i=1; ?>
@@ -36,6 +37,7 @@
                                           <td>{{ $complaint->number}}</td>
                                           <td>{{ $complaint->email }}</td>
                                           <td>{{ $complaint->reason }}</td>
+                                          <td>{{ $complaint->created_at->format('d-M-Y') }}</td>
                                           <td>
                                            @if($complaint->reason != 'DONE') <button type="button" class="btn btn-warning pending" title={{ __("Action pending") }} data-toggle="modal" data-target="#exampleModal" id="{{$complaint->id}}" >
                                             <i class="fa fa-exclamation-triangle" ></i>
@@ -44,6 +46,7 @@
                                             <a  href="/complaints/complaintView/{{$complaint->id}}" rel="tooltip" title={{__("view") }} class="btn btn-success btn-simple btn-xs" >
                                             <i class="fa fa-eye"></i></a> 
                                             </td>
+                                           
                                         </tr>
                                         @endforeach
                                     </tbody>

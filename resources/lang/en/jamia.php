@@ -116,7 +116,8 @@ return [
     'delete'  => 'Delete All',
     'upload' => 'Upload',
     'main' => 'Main Image',
-    'card_no' => 'CARD NO'
+    'card_no' => 'CARD NO',
+    'Complaint_date' => 'Complaint Date'
 
 
 ];

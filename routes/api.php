@@ -159,8 +159,22 @@ Route::post('/MobileUserSignup/', 'App\Http\Controllers\APIController@MobileUser
 
 Route::post('/MobileUserSignIn/', 'App\Http\Controllers\APIController@MobileUserSignIn');
 
-Route::post('/sendMobileUserPassword/', 'App\Http\Controllers\APIController@sendMobileUserPassword');
+Route::post('/sendMobileUserPassword/', 'App\Http\Controllers\APIController@sendMobileUserPassword2');
 
 
 Route::get('/GetHomeScreenData/', 'App\Http\Controllers\APIController@GetHomeScreenData');
+
+
+Route::post('/sendEmail/', 'App\Http\Controllers\APIController@sendEmail5');
+
+
+//Route::post('/sendEmail/', 'App\Http\Controllers\APIController@sendEmail');
+
+
+
+Route::get('/getCoordinates/', 'App\Http\Controllers\APIController@getCoordinates');
+
+
+
+
 

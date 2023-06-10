@@ -117,7 +117,8 @@ return [
     'delete'  => 'حذف الكل',
     'upload' => 'رفع',
     'main' => 'الصورة الرئيسية',
-    'card_no' => 'لا بطاقة'
+    'card_no' => 'لا بطاقة',
+    'Complaint_date' => 'تاريخ '
 
 
 ];

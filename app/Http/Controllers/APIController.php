@@ -18,6 +18,12 @@ use App\Models\DiscardReport;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use GuzzleHttp\Client;
+use Swift_SmtpTransport;
+use Swift_Mailer;
+use Swift_Message;
+//use Illuminate\Support\Facades\Mail;
+
 
 
 class APIController extends Controller
@@ -1727,12 +1733,17 @@ class APIController extends Controller
                     ->where('device_fcm_token', $device_fcm_token)
                     ->first();
             
-                if (!$existingRecord) {
+                //if (!$existingRecord) {
                     // Insert data into the 'device_fcm_token' table
-                    DB::table('device_fcm_token')->insert([
-                        'device_fcm_token' => $device_fcm_token
-                    ]);
-                }
+                  //  DB::table('device_fcm_token')->insert([
+                  //      'device_fcm_token' => $device_fcm_token
+                  //  ]);
+               // }
+
+
+                DB::table('device_fcm_token')->insert([
+                    'device_fcm_token' => $device_fcm_token
+                ]);
             
                 // The insertion will be skipped if the device_fcm_token already exists in the table.
             
@@ -2188,9 +2199,30 @@ class APIController extends Controller
                     
                     // Retrieve the created user
                     $user = DB::table('appusers')->find($userId);
+
+
+
+                   // $ShareHolderProfit = DB::table('shareholdersnfamilydata')
+                  //  ->select('SHR_NO as Box_No','NAME','CIVIL_ID','CODE as ShareHolderBarCode','PROFIT')
+                    //    ->where('CIVIL_ID', $validatedData['civilid'])                        
+                       // ->Where('SHR_NO', $box_no)                    
+                    //    ->get();
+
+                    
+                       // if ($ShareHolderProfit->isEmpty()) {
+                            // Return an empty message
+                        //    return response()->json(['message' => 'No shareholder family card data found.']);
+                       // }
+
         
                     // Return a success response
-                    return response()->json(['message' => 'Signup successful', 'user' => $user]);
+                    return response()->json(['message' => 'Signup successful', 'user' => $ShareHolderProfit]);
+
+                  // return response()->json(['message' => 'Signup successful', 'user' => $ShareHolderProfit]);
+
+                  //return response()->json(['message' =>  $ShareHolderProfit]);
+
+
                 } catch (\Exception $e) {
                     // Return an error response
                     return response()->json(['message' => 'Error occurred while signing up', 'error' => $e->getMessage()], 500);
@@ -2273,13 +2305,188 @@ class APIController extends Controller
                         return response()->json(['message' => 'Password sent to user email']);
                     } else {
                         // If the user is not found, return an error response
-                        return response()->json(['message' => 'User not found'], 404);
+                        return response()->json(['message' => 'User email not found'], 404);
                     }
                 } catch (\Exception $e) {
                     // Return an error response
                     return response()->json(['message' => 'Error occurred while sending password', 'error' => $e->getMessage()], 500);
                 }
             }
+
+            
+
+
+            public function sendMobileUserPassword1(Request $request)
+            {
+                try {
+                    // Validate the request data
+                    $validatedData = $request->validate([
+                        'email' => 'required|email',
+                    ]);
+
+                    // Find the user in the database
+                    $user = DB::table('appUsers')
+                        ->where('email', $validatedData['email'])
+                        ->first();
+
+                    // If the user is found, send the password to their email
+                    if ($user) {
+                        // Set the mailer configuration
+                        $config = [
+                            'transport' => 'smtp',
+                            'host' => 'smtp.gmail.com',
+                            'port' => 465,
+                            'encryption' => 'tsl',
+                            'username' => 'deepinuniverse@gmail.com',
+                            'password' => 'donald42376#12',
+                            'from' => [
+                                'address' => 'deepinuniverse@gmail.com',
+                                'name' => 'Support Team, Sabah Alnasar'
+                            ]
+                        ];
+                        config(['mail' => $config]);
+
+                        // Send the password to the user's email
+                        Mail::raw("Your password: $user->password", function ($message) use ($validatedData) {
+                            $message->to($validatedData['email'])
+                                ->subject('Your Password');
+                        });
+
+                        // Return a success response
+                        return response()->json(['message' => 'Password sent to user email']);
+                    } else {
+                        // If the user is not found, return an error response
+                        return response()->json(['message' => 'User email not found'], 404);
+                    }
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending password', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+
+            public function sendMobileUserPassword2(Request $request)
+            {
+                try {
+                    // Validate the request data
+                    $validatedData = $request->validate([
+                        'email' => 'required|email',
+                    ]);
+
+                    // Find the user in the database
+                    $user = DB::table('appUsers')
+                        ->where('email', $validatedData['email'])
+                        ->first();
+
+                    // If the user is found, send the password to their email
+                    if ($user) {
+                        // Set the mailer configuration
+                        $config = [
+                            'driver' => 'smtp',
+                            'host' => 'mail.privateemail.com',
+                            'port' => 465,
+                            'encryption' => 'ssl',
+                            'username' => 'support@sabahalnaser.com',
+                            'password' => '123456',
+                            'from' => [
+                                'address' => 'support@sabahalnaser.com',
+                                'name' => 'Support Team, Sabah Alnasar'
+                            ]
+                        ];
+
+                        // Send the password to the user's email using the specified mailer
+                        Mail::mailer('smtp')->raw("Your password: $user->password", function ($message) use ($validatedData) {
+                            $message->to($validatedData['email'])
+                                ->subject('Your Password');
+                        });
+
+                        // Return a success response
+                        return response()->json(['message' => 'Password sent to user email']);
+                    } else {
+                        // If the user is not found, return an error response
+                        return response()->json(['message' => 'User email not found'], 404);
+                    }
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending password', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+
+            public function sendEmail()
+            {
+                try {
+                    // Set the email details
+                    $toEmail = 'deepinuniverse@gmail.com';
+                    $subject = 'Test Email';
+                    $content = 'This is a test email sent from Laravel using Gmail SMTP.';
+
+                    // Set the mailer configuration
+                    $config = [
+                        'driver' => 'smtp',
+                        'host' => 'smtp.gmail.com',
+                        'port' => 587,
+                        'encryption' => 'tls',
+                        'username' => 'deepinuniverse@gmail.com',
+                        'password' => 'donald42376#12',
+                        'timeout' => null,
+                        'auth_mode' => null,
+                    ];
+
+                    // Send the email using the specified mailer and configuration
+                    Mail::mailer('smtp')->send([], [], function ($message) use ($toEmail, $subject, $content) {
+                        $message->to($toEmail)
+                            ->subject($subject)
+                            ->setBody($content);
+                    });
+
+                    // Return a success response
+                    return response()->json(['message' => 'Email sent successfully']);
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending email', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+
+            public function sendEmail1()
+            {
+                try {
+                    // Set the email details
+                    $toEmail = 'deepinuniverse@gmail.com';
+                    $subject = 'Test Email';
+                    $content = 'This is a test email sent using Laravel with custom SMTP settings.';
+
+                    // Set the mailer configuration
+                    $config = [
+                        'driver' => 'smtp',
+                        'host' => 'mail.privateemail.com',
+                        'port' => 465,
+                        'encryption' => 'SSL',
+                        'username' => 'support@sabahalnaser.com',
+                        'password' => '123456',
+                    ];
+
+                    // Send the email using the specified mailer and configuration
+                    Mail::mailer('smtp')->send([], [], function ($message) use ($toEmail, $subject, $content) {
+                        $message->to($toEmail)
+                            ->subject($subject)
+                            ->setBody($content);
+                    });
+
+                    // Return a success response
+                    return response()->json(['message' => 'Email sent successfully']);
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending email', 'error' => $e->getMessage()], 500);
+                }
+            }
+
+
+
+            
+
+
 
 
 
@@ -2363,6 +2570,109 @@ class APIController extends Controller
                         'status' => false,
                         'message' => 'An error occurred: ' . $e->getMessage()
                     ], 500);
+                }
+            }
+
+
+
+
+            public function getCoordinates()
+            {
+                // Define the address or location
+                $address = 'https://goo.gl/maps/8r2AjH3zbxuYrEGP6';
+
+                // Initialize Guzzle HTTP client
+                $client = new Client();
+
+                // Send a GET request to the Google Maps Geocoding API
+                $response = $client->get('https://maps.googleapis.com/maps/api/geocode/json', [
+                    'query' => [
+                        'address' => $address,
+                        'key' => 'YOUR_API_KEY', // Replace with your Google Maps API key
+                    ],
+                ]);
+
+                // Parse the response JSON
+                $data = json_decode($response->getBody(), true);
+
+                // Check if the API request was successful
+                if ($data['status'] === 'OK') {
+                    // Extract the latitude and longitude
+                    $latitude = $data['results'][0]['geometry']['location']['lat'];
+                    $longitude = $data['results'][0]['geometry']['location']['lng'];
+
+                    // Return the latitude and longitude
+                    return response()->json([
+                        'latitude' => $latitude,
+                        'longitude' => $longitude,
+                    ]);
+                } else {
+                    // Return an error response if the API request failed
+                    return response()->json(['message' => 'Failed to retrieve coordinates'], 500);
+                }
+            }
+
+
+
+            public function sendEmail5(Request $request)            
+            {
+                try 
+                {
+
+
+                    $validatedData = $request->validate([
+                        'email' => 'required|email',
+                    ]);
+
+                    // Find the user in the database
+                   // $user = DB::table('appUsers')
+                      //  ->where('email', $validatedData['email'])
+                     //   ->first();
+
+
+                        $user = DB::table('appUsers')
+                        ->where('email', $validatedData['email'])
+                        ->value('password');
+
+
+                    if (!$user) {
+                        return response()->json(['message' => 'User email not found'], 404);
+                    }
+
+
+                    // Create the SMTP transport
+                    $transport = new Swift_SmtpTransport('mail.privateemail.com', 465, 'ssl');
+                    $transport->setUsername('support@sabahalnaser.com');
+                    $transport->setPassword('123456');
+
+                    // Create the Swift Mailer instance
+                    $mailer = new Swift_Mailer($transport);
+
+                    // Create the message
+                    $message = new Swift_Message();
+                    //$message->setSubject('كلمة مرور جديدة');
+                    $message->setSubject(' deep ');
+                    $message->setFrom(['support@sabahalnaser.com' => 'Support - Sabha Alnaser']);
+                    //$message->setTo(['deepinuniverse@gmail.com' => 'Recipient Name']);
+                    $message->setTo([$validatedData['email'] => 'Recipient Name']);
+                   // $message->setBody('كلمة المرور الجديدة');
+
+                    $message->setBody('كلمة المرور الجديدة: ' . $user);
+
+                    // Send the email
+                    $result = $mailer->send($message);
+
+                    // Check if the email was sent successfully
+                    if ($result) {
+                        // Return a success response
+                        return response()->json(['message' => 'Email sent successfully']);
+                    } else {
+                        // Return an error response
+                        return response()->json(['message' => 'Failed to send email'], 500);
+                    }
+                } catch (\Exception $e) {
+                    // Return an error response
+                    return response()->json(['message' => 'Error occurred while sending email', 'error' => $e->getMessage()], 500);
                 }
             }
 
