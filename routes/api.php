@@ -165,7 +165,7 @@ Route::post('/sendMobileUserPassword/', 'App\Http\Controllers\APIController@send
 Route::get('/GetHomeScreenData/', 'App\Http\Controllers\APIController@GetHomeScreenData');
 
 
-Route::post('/sendEmail/', 'App\Http\Controllers\APIController@sendEmail5');
+Route::post('/resetPassword/', 'App\Http\Controllers\APIController@sendEmail5');
 
 
 //Route::post('/sendEmail/', 'App\Http\Controllers\APIController@sendEmail');
