@@ -2630,7 +2630,7 @@ class APIController extends Controller
                      //   ->first();
 
 
-                        $user = DB::table('appUsers')
+                        $user = DB::table('appusers')
                         ->where('email', $validatedData['email'])
                         ->value('password');
 
