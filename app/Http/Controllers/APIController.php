@@ -2650,7 +2650,7 @@ class APIController extends Controller
 
                     // Create the message
                     $message = new Swift_Message();
-                    //$message->setSubject('كلمة مرور جديدة');
+                    $message->setSubject('كلمة مرور جديدة');
                    // $message->setSubject(' deep ');
                     $message->setFrom(['support@sabahalnaser.com' => 'Support - Sabha Alnaser']);
                     //$message->setTo(['deepinuniverse@gmail.com' => 'Recipient Name']);
