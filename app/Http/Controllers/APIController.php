@@ -2216,7 +2216,7 @@ class APIController extends Controller
 
         
                     // Return a success response
-                    return response()->json(['message' => 'Signup successful', 'user' => $ShareHolderProfit]);
+                    return response()->json(['message' => 'Signup successful', 'user' => $user]);
 
                   // return response()->json(['message' => 'Signup successful', 'user' => $ShareHolderProfit]);
 
