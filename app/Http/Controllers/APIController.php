@@ -2229,7 +2229,7 @@ class APIController extends Controller
                 }
             }
 
-            public function MobileUserSignIn(Request $request)
+            public function MobileUserSignInOLD(Request $request)
             {
 
 
@@ -2277,6 +2277,50 @@ class APIController extends Controller
 
                 
             }
+
+
+
+            public function MobileUserSignIn(Request $request)
+                {
+                    try {
+                        // Validate the request data
+                        $validatedData = $request->validate([
+                            'civilid' => 'required',
+                            'password' => 'required',
+                        ]);
+
+                        // Check if the user exists in the database
+                        $user = DB::table('appusers')
+                            ->where('civilid', $validatedData['civilid'])
+                            ->where('password', $validatedData['password'])
+                            ->first();
+
+                        // If the user is not found or the password is incorrect, return an error response
+                        if (!$user) {
+                            return response()->json(['message' => 'Invalid credentials'], 401);
+                        }
+
+                        $ShareHolderProfit = DB::table('shareholdersnfamilydata')
+                            ->select('SHR_NO as Box_No', 'NAME', 'CIVIL_ID', 'CODE as ShareHolderBarCode', 'PROFIT')
+                            ->where('CIVIL_ID', $validatedData['civilid'])
+                            ->get();
+
+                        if ($ShareHolderProfit->isEmpty()) {
+                            // Return an empty message with status 200
+                            return response()->json(['message' => 'No shareholder family card data found.'], 200);
+                        }
+
+                        // Return a success response with the ShareHolderProfit data
+                       // return response()->json(['message' => $ShareHolderProfit], 200);
+                        return response()->json(['status' => true, 'message' => $ShareHolderProfit], 200);
+
+
+                    } catch (\Exception $e) {
+                        // Return an error response
+                        return response()->json(['message' => 'Error occurred while signing in', 'error' => $e->getMessage()], 500);
+                    }
+                }
+
 
 
 
