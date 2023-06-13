@@ -2301,7 +2301,7 @@ class APIController extends Controller
                         }
 
                         $ShareHolderProfit = DB::table('shareholdersnfamilydata')
-                            ->select('SHR_NO as Box_No', 'NAME', 'CIVIL_ID', 'CODE as ShareHolderBarCode', 'PROFIT')
+                            ->select('SHR_NO as SHR_NO', 'NAME', 'CIVIL_ID', 'CODE as CODE', 'PROFIT')
                             ->where('CIVIL_ID', $validatedData['civilid'])
                             ->get();
 
