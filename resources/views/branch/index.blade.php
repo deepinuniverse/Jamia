@@ -35,7 +35,11 @@
 											<tr>
 												<td>{{ $i++; }}</td>
                                                 <td>{{ $branche->name }}</td>
-                                                <td>@if($branche->branch_categories_id > 0){{ $branche->branchCategory->name}} @endif</td>
+                                                <td>
+                                                    @if($branche->branch_categories_id > 0  && isset($branche->branchCategory))
+                                                        {{ $branche->branchCategory->name}}
+                                                     @endif
+                                                </td>
                                                 <td>{{ $branche->address }}</td>
                                                 <td>{{ $branche->phone}}</td>
                                                 <td>{{ $branche->hours}}</td>
