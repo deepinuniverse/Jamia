@@ -189,7 +189,7 @@
       @endif
 
       @if(Auth::user()->userpermission(17))
-      <li class="nav-item{{ $activePage == 'informations' ? ' active' : '' }}" >
+      <li class="nav-item{{ $activePage == 'app_users' ? ' active' : '' }}" >
         <a class="nav-link" href="/app_users">
           <i class="material-icons">content_paste</i>
             <p>{{ __('jamia.app_users') }}</p>
