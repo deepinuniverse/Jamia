@@ -118,7 +118,13 @@ return [
     'upload' => 'رفع',
     'main' => 'الصورة الرئيسية',
     'card_no' => 'لا بطاقة',
-    'Complaint_date' => 'تاريخ '
+    'Complaint_date' => 'تاريخ ',
+
+    'app_users' => 'Mobile App Users',
+    'civilid' => 'Civil-ID',
+    'phone' => 'Mobile #',
+    'box_no' => 'Box_No',
+    'created_at' => 'Created Date'
 
 
 ];

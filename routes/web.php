@@ -25,6 +25,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/directors/delete/{id}', 'App\Http\Controllers\DirectorController@destroy')->name('directors.delete');
     Route::get('/directors/view/list','App\Http\Controllers\DirectorController@view');
 
+	Route::resource('/app_users','App\Http\Controllers\AppUsersController');
+
     Route::resource('/news','App\Http\Controllers\NewsDetailsController');
 	Route::get('/news/edit/{id}', 'App\Http\Controllers\NewsDetailsController@edit')->name('news.edit');
     Route::post('/news/update','App\Http\Controllers\NewsDetailsController@update');

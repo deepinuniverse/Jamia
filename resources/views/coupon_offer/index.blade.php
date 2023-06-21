@@ -34,7 +34,11 @@
 											<tr>
 												<td>{{ $i++; }}</td>
                                                 <td>{{ $offer->offer_name }}</td>
-                                                <td>@if($offer->offer_categories_id > 0){{ $offer->offerCategory->name}} @endif</td>
+                                                <td>@if($offer->offer_categories_id > 0  && isset($offer->offerCategory))
+                                                    
+                                                {{ $offer->offerCategory->name}} @endif
+                                            
+                                            </td>
                                                 <td>{{ $offer->contact_no }}</td>
                                                 <td>{{ date('d/m/Y',strtotime($offer->from_dt)) }}-{{ date('d/m/Y',strtotime($offer->to_dt)) }}</td>
 												<td>

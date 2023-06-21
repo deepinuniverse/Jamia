@@ -187,6 +187,16 @@
         </a>
       </li>
       @endif
+
+      @if(Auth::user()->userpermission(17))
+      <li class="nav-item{{ $activePage == 'informations' ? ' active' : '' }}" >
+        <a class="nav-link" href="/app_users">
+          <i class="material-icons">content_paste</i>
+            <p>{{ __('jamia.app_users') }}</p>
+        </a>
+      </li>
+      @endif
+
       
     </ul>
   </div>

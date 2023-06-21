@@ -117,7 +117,15 @@ return [
     'upload' => 'Upload',
     'main' => 'Main Image',
     'card_no' => 'CARD NO',
-    'Complaint_date' => 'Complaint Date'
+    'Complaint_date' => 'Complaint Date',
+
+ 
+    'app_users' => 'Mobile App Users',
+    'civilid' => 'Civil-ID',
+    'phone' => 'Mobile #',
+    'box_no' => 'Box_No',
+    'created_at' => 'Created Date',
+    'mobile_users' => 'Mobile App Users'
 
 
 ];
