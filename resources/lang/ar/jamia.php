@@ -124,7 +124,8 @@ return [
     'civilid' => 'Civil-ID',
     'phone' => 'Mobile #',
     'box_no' => 'Box_No',
-    'created_at' => 'Created Date'
+    'created_at' => 'Created Date',
+    'mobile_users' => 'Mobile App Users'
 
 
 ];

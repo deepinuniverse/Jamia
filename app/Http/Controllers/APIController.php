@@ -914,7 +914,7 @@ class APIController extends Controller
                 // Retrieve offers from the 'news_details' table in descending order of creation date
                 $offer_categories = DB::table('offer_categories')
                     ->orderBy('created_at', 'desc') 
-                    ->limit(5)                   
+                    ->limit(50)                   
                     ->get();
 
                     if ($offer_categories->isEmpty()) {
@@ -957,7 +957,7 @@ class APIController extends Controller
                 ->join('offer_categories', 'coupon_offers.offer_categories_id', '=', 'offer_categories.id')
                 ->select('coupon_offers.*', 'offer_categories.name as offer_category_name') 
                 ->orderBy('coupon_offers.created_at', 'desc')
-                ->limit(5)              
+                ->limit(50)              
                 ->get();
 
                 if ($couponOffers->isEmpty()) {
