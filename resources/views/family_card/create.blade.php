@@ -42,13 +42,13 @@
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.code")}}</label>
-                                        <input type="text" id="code" name="code" required class="form-control">
+                                        <input type="text" id="code" name="code"  class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4">
                                     <div class="form-group">
                                         <label for="name">{{ __("jamia.card_no")}}</label>
-                                        <input type="text" id="card" name="card" required class="form-control">
+                                        <input type="text" id="card" name="card"  class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-md-4" style="display:none;">
