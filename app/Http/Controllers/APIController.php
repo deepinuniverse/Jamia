@@ -2080,7 +2080,22 @@ class APIController extends Controller
             ->pluck('device_fcm_token')
             ->toArray();
 
+            
+
+            $values = [];
+
+            foreach ($deviceTokens as $token) {
+                $values[] = [
+                    'device_fcm_token' => $token,
+                    'title' => $title,
+                    'notificationType' => $notificationType,                        
+                    'description' => $notificationDesc                      
+                ];
+            }
+
             DB::table('fcm_messages')->insert($values);
+
+
 
         $responses = [];
 
