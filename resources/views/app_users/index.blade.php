@@ -29,6 +29,7 @@
                                         <th>{{__("jamia.phone")}}</th>
                                         <th>{{__("jamia.box_no")}}</th>
 										<th>{{__("jamia.created_at") }}</th>
+                                        <th>{{__("jamia.action") }}</th>
 									</thead>
 									<tbody><?php $i=1; ?>
 										@foreach ($appUsers as $user)
@@ -41,13 +42,13 @@
                                                 <td>{{ $user->box_no }}</td>
                                                 <td>{{ $user->created_at }}</td>
 
-
-
                                                 <td>
 													         <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$user->id}}">
                                                     <i class="fa fa-times"></i></button>
                                                     
                                                 </td>
+
+                                             
 
 											
                                             </tr>
