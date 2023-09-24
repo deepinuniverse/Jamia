@@ -2291,9 +2291,21 @@ class APIController extends Controller
                     $existingUser = DB::table('appusers')
                     ->where('civilid', $validatedData['civilid'])
                     ->first();
+
+
+                    $existingUserCIVILandPhone = DB::table('appusers')
+                    ->where('civilid', $validatedData['civilid'])
+                    ->where('phone', $validatedData['phone'])
+                      ->first();
+
+
         
                     if ($existingUser) {
-                        return response()->json(['message' => 'Civil ID already registered'], 409);
+                        return response()->json(['message' => 'Civil ID  already registered'], 409);
+                    }
+
+                    if ($existingUserCIVILandPhone) {
+                        return response()->json(['message' => 'Same record Civil ID and Phone Number both already registered'], 409);
                     }
         
                     // Create a new user
