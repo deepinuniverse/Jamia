@@ -40,6 +40,15 @@
                                                 <td>{{ $user->phone }}</td>
                                                 <td>{{ $user->box_no }}</td>
                                                 <td>{{ $user->created_at }}</td>
+
+
+
+                                                <td>
+													         <button type="button"  rel="tooltip" title={{ __("delete") }} class="btn btn-danger btn-simple btn-xs delete" id="{{$user->id}}">
+                                                    <i class="fa fa-times"></i></button>
+                                                    
+                                                </td>
+
 											
                                             </tr>
 										@endforeach
@@ -61,9 +70,9 @@
       );
       $(document).on("click",".delete", function() {
          var id = $(this).attr("id"); 
-          if(confirm("Do you want to delete this Employee?") == true){
+          if(confirm("Do you want to delete this User?") == true){
 
-            var url = '/coupon_user/destroy/' + id; 
+            var url = '/app_users/destroy/' + id; 
             window.location= url;
           }
       });

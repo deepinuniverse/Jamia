@@ -14,6 +14,9 @@ class AppUsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    // protected $appUser = 'AppUsers'; 
+
     public function index()
     {
         //
@@ -36,6 +39,15 @@ class AppUsersController extends Controller
             return $e->getMessage();
         }
     } 
+
+    public function destroy($id)
+    {
+         $appUser = AppUsers::find($id);
+         $appUser->delete();
+         return Redirect('/app_users')->with('success','Mobile App User deleted successfully');
+
+
+    }
 
    
 

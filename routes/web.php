@@ -26,6 +26,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/directors/view/list','App\Http\Controllers\DirectorController@view');
 
 	Route::resource('/app_users','App\Http\Controllers\AppUsersController');
+	Route::get('/app_users/destroy/{id}', 'App\Http\Controllers\AppUsersController@destroy')->name('app_users.delete');
+
 
     Route::resource('/news','App\Http\Controllers\NewsDetailsController');
 	Route::get('/news/edit/{id}', 'App\Http\Controllers\NewsDetailsController@edit')->name('news.edit');
@@ -148,4 +150,7 @@ Route::get('lang/{lang}', ['as' => 'lang.switch', 'uses' => 'App\Http\Controller
 
 Route::post('/send-push-notification', 'App\Http\Controllers\APIController@SendPushNotificationALL')->name('send-push-notification');
 
-
+Route::middleware(['web'])->group(function () {
+    Route::post('/send-push-notification', 'App\Http\Controllers\APIController@SendPushNotificationALL')->name('send-push-notification');
+    // Other routes...
+});
