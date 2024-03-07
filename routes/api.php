@@ -175,6 +175,8 @@ Route::post('/resetPassword/', 'App\Http\Controllers\APIController@sendEmail5');
 Route::get('/getCoordinates/', 'App\Http\Controllers\APIController@getCoordinates');
 
 
+Route::get('/getShareHolderProfitByCivil/{civilid}', 'App\Http\Controllers\APIController@getShareHolderProfitByCivil');
+
 
 
 

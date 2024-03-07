@@ -2834,6 +2834,58 @@ class APIController extends Controller
                 }
             }
 
+
+
+            public function getShareHolderProfitByCivil(Request $request)
+            {        
+                try {
+                    // Retrieve branches from the 'branches' table in descending order of creation date               
+    
+
+
+                    $ShareHolderProfit = DB::table('shareholdersnfamilydata')
+                    ->select('PROFIT')
+                        ->where('CIVIL_ID', $request['civilid'])                        
+                       // ->Where('SHR_NO', $box_no)                    
+                        ->get();
+
+                 
+    
+    
+    
+                        if ($ShareHolderProfit->isEmpty()) {
+                            // No records found
+                            return response()->json([
+                                'code' => 404,
+                                'status' => false,
+                                'message' => 'No records found',
+                                'data' => null
+                            ], 404);
+                        }
+            
+                    // Create a JSON response with success status, data, and response code
+                    return response()->json([
+                        'code' => 200,
+                        'status' => true,
+                        'data' => $ShareHolderProfit
+                    ], 200);
+                } catch (QueryException $e) {
+                    // If a database query exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'Failed to shareholder profit branches from the database: ' . $e->getMessage()
+                    ], 500);
+                } catch (\Exception $e) {
+                    // If any other exception occurs, create a JSON response with error status, error message, and response code
+                    return response()->json([
+                        'code' => 500,
+                        'status' => false,
+                        'message' => 'An error occurred: ' . $e->getMessage()
+                    ], 500);
+                }
+            }   
+
             
            
     
