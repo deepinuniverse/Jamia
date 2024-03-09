@@ -2844,7 +2844,7 @@ class APIController extends Controller
 
 
                     $ShareHolderProfit = DB::table('shareholdersnfamilydata')
-                    ->select('PROFIT')
+                    ->select('PROFIT', 'CODE' )
                         ->where('CIVIL_ID', $request['civilid'])                        
                        // ->Where('SHR_NO', $box_no)                    
                         ->get();
