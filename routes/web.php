@@ -137,6 +137,7 @@ Route::group(['middleware' => 'auth'], function () {
      Route::post('/products/upload', 'App\Http\Controllers\ProductController@uploadPdts')->name('products.upload');
 
      Route::get('/offer/images/destroy/{id}', 'App\Http\Controllers\OfferController@destroyImages')->name('offer.images.destroy');
+	 Route::post('upload_family_card', 'App\Http\Controllers\FamilyCardDataController@uploadFamilyCard')->name('upload_family_card');
 
 });
 

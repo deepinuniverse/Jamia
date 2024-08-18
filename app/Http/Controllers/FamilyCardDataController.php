@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\FamilyCardData;
 use Picqer\Barcode\BarcodeGeneratorPNG;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\UserImport;
 
 class FamilyCardDataController extends Controller
 {
@@ -123,5 +125,16 @@ class FamilyCardDataController extends Controller
          $family_data->save();
          return redirect('/family_card');
     }
+    public function uploadFamilyCard(Request $request)
+   {
+      $path1 = $request->file('data')->store('temp');
+      $path=storage_path('app').'/'.$path1;
+
+
+          Excel::import(new productImport(),$path);
+    
+        return Redirect('/products');
+     
+   }
     
 }

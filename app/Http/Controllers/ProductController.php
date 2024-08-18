@@ -23,8 +23,11 @@ class ProductController extends Controller
    }
    public function uploadPdts(Request $request)
    {
-        $import = new ProductImport();
-        Excel::import($import, $request->file('img'));
+      $path1 = $request->file('data')->store('temp');
+      $path=storage_path('app').'/'.$path1;
+
+
+          Excel::import(new productImport(),$path);
     
         return Redirect('/products');
      

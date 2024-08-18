@@ -22,7 +22,7 @@
                         <form action="/products/upload" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-6" style="display:inline;">
-                                    <input type="file" name="img" required>
+                                    <input type="file" name="data" required>
                                 </div>
                             <div class="col-md-6 p-3" style="display:inline;">
                                     <input type="submit" value="{{ __("jamia.upload") }}" class="btn btn-success">

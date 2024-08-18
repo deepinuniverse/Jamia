@@ -17,6 +17,20 @@
                             	</div>
                         	</div>
                       	</div>
+                          <br>
+                          <form action="{{route('upload_family_card')}}" method="POST" enctype="multipart/form-data">
+                              @csrf
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <input type="file" name="data" class="form-control">
+                                  </div>
+                                  <div class="col-md-6">
+                                      <button type="submit" class="btn btn-primary">upload excel</button>
+                                  </div>
+                              </div>
+                          </form>
+                          
+                          <br>
                       	<div class="card-body">
                         	<div class="table-responsive">
                           		<table class="table" id="data-table">
