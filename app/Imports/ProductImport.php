@@ -24,17 +24,17 @@ class ProductImport implements ToCollection, WithHeadingRow
         
                    
         
-                            $products =  Product::create(
-                           
+                            $products =  Product::updateOrCreate(
+                            [
+                                'ItemBarcode' => $row['barcode'],
+                                'ItemCode' => $row['code'],
+                            ],
                             [
                                 'ItemName' => $row['name'],
                                 'ItemPrice' => $row['price'],
                                 'ItemBarcode' => $row['barcode'],
                                 'ItemCode' => $row['code'],
                                
-                                
-                                
-        
                             ]);
                             
 
