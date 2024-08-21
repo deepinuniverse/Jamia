@@ -131,9 +131,9 @@ class FamilyCardDataController extends Controller
       $path=storage_path('app').'/'.$path1;
 
 
-          Excel::import(new productImport(),$path);
+          Excel::import(new UserImport(),$path);
     
-        return Redirect('/products');
+        return Redirect('/family_card');
      
    }
     
