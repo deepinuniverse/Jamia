@@ -37,12 +37,10 @@ class UserImport implements ToCollection, WithHeadingRow
                             'CODE' => $row['code'],
                         ],
                         [
-                            'CARD_NO' => $row['card_no'],
+                            
                             'NAME' => $row['name'],
                             'SHR_NO' => $row['shr_no'],
-                            'PROFIT' => $row['profit'],
-                            'sex' => $row['sex'],
-                            'start_date' => $row['start_date'],
+                           
                            
                         ]);
                                     
