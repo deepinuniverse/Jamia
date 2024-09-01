@@ -32,8 +32,7 @@ class ProductImport implements ToCollection, WithHeadingRow
                             [
                                 'ItemName' => $row['name'],
                                 'ItemPrice' => $row['price'],
-                                'ItemBarcode' => $row['barcode'],
-                                'ItemCode' => $row['code'],
+                                
                                
                             ]);
                             
