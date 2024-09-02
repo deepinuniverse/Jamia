@@ -10,6 +10,7 @@ class FamilyCardData extends Model
     use HasFactory;
     
     protected $table='shareholdersnfamilydata';
+    protected $guarded=[];
     
     public $timestamps = false;
 }
