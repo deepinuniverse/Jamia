@@ -138,7 +138,7 @@ Route::group(['middleware' => 'auth'], function () {
 
      Route::get('/offer/images/destroy/{id}', 'App\Http\Controllers\OfferController@destroyImages')->name('offer.images.destroy');
 	 Route::post('upload_family_card', 'App\Http\Controllers\FamilyCardDataController@uploadFamilyCard')->name('upload_family_card');
-
+	 Route::post('/SendNotification/{id}','App\Http\Controllers\NotificationController@SendNotification')->name('SendNotification');
 });
 
 

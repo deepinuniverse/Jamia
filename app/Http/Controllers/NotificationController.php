@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
-
+use Kreait\Firebase\Factory;
+use Kreait\Firebase\Messaging\CloudMessage;
 class NotificationController extends Controller
 {
     /**
@@ -96,5 +97,27 @@ class NotificationController extends Controller
          return Redirect('/notifications')->with('success','Notification deleted successfully');
 
 
+    }
+
+    public function SendNotification($id)
+    {
+        $notify = Notification::where('id',$id)->first();
+        
+        $firebase = (new Factory)
+            ->withServiceAccount(__DIR__.'/../../../config/firebase_credentials.json');
+ 
+        $messaging = $firebase->createMessaging();
+ 
+        $message = CloudMessage::fromArray([
+            'notification' => [
+                'title' => "جمعية صباح الناصر",
+                'body' => $notify->notes,
+            ],
+            'topic' => 'sbahalnasr'
+        ]);
+ 
+        $messaging->send($message);
+ 
+        return Redirect('/notifications')->with('success','Notification Send successfully');
     }
 }

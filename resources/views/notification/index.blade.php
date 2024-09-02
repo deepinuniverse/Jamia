@@ -47,9 +47,10 @@
                                                     
                                                    
 
-                                                    <button type="button" rel="tooltip" title="{{ __("send") }}" class="btn btn-primary btn-simple btn-xs send" data-description="{{ __("jamia.description") }}" id="{{$notification->id}}">
-    <i class="fa fa-send"></i>
-</button>
+                                                  <form action="{{route('SendNotification',$notification->id)}}" method="POST">
+                                                    @csrf
+                                                    <button type="submit"><i class="fa fa-send"></i></button>
+                                                 </form>
                                                     
                                                 </td>
                                             </tr>
