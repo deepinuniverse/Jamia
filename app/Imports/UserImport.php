@@ -40,6 +40,7 @@ class UserImport implements ToCollection, WithHeadingRow
                             
                             'NAME' => $row['name'],
                             'SHR_NO' => $row['shr_no'],
+                            'PROFIT' => $row['profit'],
                            
                            
                         ]);
